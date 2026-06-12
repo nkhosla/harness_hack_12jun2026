@@ -11,7 +11,7 @@ interface CTAButtonProps {
   size?: "md" | "lg";
 }
 
-export function CTAButton({ label = "Create slate →", size = "lg" }: CTAButtonProps) {
+export function CTAButton({ label = "Create slate", size = "lg" }: CTAButtonProps) {
   const router = useRouter();
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState("");
@@ -31,8 +31,8 @@ export function CTAButton({ label = "Create slate →", size = "lg" }: CTAButton
 
   const sizeClasses =
     size === "lg"
-      ? "py-4 px-10 text-base font-semibold"
-      : "py-3 px-7 text-sm font-medium";
+      ? "py-5 px-14 text-xl font-bold"
+      : "py-3.5 px-9 text-base font-semibold";
 
   return (
     <div>
@@ -46,13 +46,20 @@ export function CTAButton({ label = "Create slate →", size = "lg" }: CTAButton
         onBlur={() => ref.current && focusRingOut(ref.current)}
         className={[
           sizeClasses,
-          "rounded-md bg-accent text-white tracking-wide",
+          "rounded-md bg-accent text-white tracking-wide cursor-pointer",
           "transition-colors duration-150 hover:bg-accent/90",
           "focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-canvas",
           "outline-none disabled:opacity-60 disabled:cursor-not-allowed",
         ].join(" ")}
       >
-        {loading ? "Creating slate…" : label}
+        {loading ? (
+          "Creating slate…"
+        ) : (
+          <span className="inline-flex items-center gap-3">
+            {label}
+            <span aria-hidden="true" className="inline-block animate-nudge-right">→</span>
+          </span>
+        )}
       </button>
       {error && (
         <p className="text-danger text-xs mt-2 max-w-xs">{error}</p>

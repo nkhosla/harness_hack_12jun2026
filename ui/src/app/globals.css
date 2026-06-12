@@ -33,6 +33,20 @@
   .animate-pulse-dot {
     animation: pulse-dot 1.4s ease-in-out infinite;
   }
+
+  .animate-nudge-right {
+    animation: nudge-right 1.5s ease-in-out infinite;
+  }
+}
+
+@keyframes nudge-right {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(8px);
+  }
 }
 
 @keyframes pulse-dot {

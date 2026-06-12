@@ -16,9 +16,12 @@ function voterPriorityLabel(salience: number): string {
   return "Emerging issue in this area";
 }
 
-const FORMAT_ICON: Record<string, string> = {
-  indoor: "⬜",
-  outdoor: "🌿",
+const WEATHER_ICON: Record<string, string> = {
+  clear: "☀️",
+  partly_cloudy: "⛅",
+  rain: "🌧️",
+  thunderstorms: "⛈️",
+  hot_humid: "🌡️",
 };
 
 function formatDate(iso: string): string {
@@ -91,7 +94,7 @@ export default function SlatePage() {
                 <AnimatedCard
                   key={event.issue.id}
                   data-card
-                  className="opacity-0 p-6 cursor-default"
+                  className="group opacity-0 p-6 cursor-pointer"
                   tabIndex={0}
                   onClick={() => {
                     window.location.href = `/runs/${run_id}/slate/${event.issue.id}`;
@@ -121,7 +124,8 @@ export default function SlatePage() {
                         <span>{formatDate(event.proposed_date)}</span>
                         <span className="text-border">·</span>
                         <span>
-                          {FORMAT_ICON[event.format]} {event.weather.condition.replace("_", " ")} ·{" "}
+                          {WEATHER_ICON[event.weather.condition] ?? "🌤️"}{" "}
+                          {event.weather.condition.replace("_", " ")} ·{" "}
                           {Math.round(event.weather.temp_f)}°F
                         </span>
                       </div>
@@ -141,7 +145,7 @@ export default function SlatePage() {
 
                     {/* Link */}
                     <div className="shrink-0 self-start sm:self-center">
-                      <span className="text-sm font-medium text-accent whitespace-nowrap">
+                      <span className="text-sm font-medium text-accent whitespace-nowrap transition-colors duration-150 group-hover:text-ink group-focus:text-ink">
                         View full briefing →
                       </span>
                     </div>

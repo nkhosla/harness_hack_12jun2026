@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { cardHoverIn, cardHoverOut, focusRingIn, focusRingOut } from "@/lib/animations";
+import { cardHoverIn, cardHoverOut } from "@/lib/animations";
 
 interface AnimatedCardProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
@@ -20,8 +20,8 @@ export function AnimatedCard({
 
   const handleMouseEnter = () => { if (ref.current) cardHoverIn(ref.current); };
   const handleMouseLeave = () => { if (ref.current) cardHoverOut(ref.current); };
-  const handleFocus = () => { if (ref.current) focusRingIn(ref.current); };
-  const handleBlur = () => { if (ref.current) focusRingOut(ref.current); };
+  const handleFocus = () => { if (ref.current) cardHoverIn(ref.current); };
+  const handleBlur = () => { if (ref.current) cardHoverOut(ref.current); };
 
   return (
     <div
