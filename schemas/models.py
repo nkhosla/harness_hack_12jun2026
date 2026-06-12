@@ -25,6 +25,14 @@ class TurnoutSummary(_StrictModel):
     notes: str
 
 
+class Article(_StrictModel):
+    title: str
+    text: str
+    url: str
+    source: str | None = None
+    published: date | None = None
+
+
 class Issue(_StrictModel):
     id: str
     title: str

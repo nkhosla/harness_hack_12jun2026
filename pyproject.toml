@@ -13,6 +13,7 @@ dependencies = [
     "fastapi",
     "uvicorn[standard]",
     "httpx",
+    "feedparser",
     "python-dotenv",
     "anthropic",
     "pandas",
@@ -32,3 +33,6 @@ py-modules = ["api", "orchestrator"]
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["schemas*", "mocks*", "agents*", "tools*"]
+
+[tool.setuptools.package-data]
+tools = ["resources/*.json"]
