@@ -11,7 +11,8 @@ from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-from runstore import EmitFn, RunStore, mock_run
+from guild_adapter import setup_guild_run
+from runstore import RunStore, mock_run
 from schemas.models import ProgressEvent, Slate
 
 app = FastAPI(title="Campaign Copilot API")
@@ -59,30 +60,40 @@ async def _execute(
     run_id: str,
     region: str,
     horizon: str,
-    emit: EmitFn,
 ) -> None:
     run = store.get(run_id)
     if run is None:
         return
 
     run.status = "running"
+    guild_hooks = await setup_guild_run(
+        run_id,
+        region=region,
+        horizon=horizon,
+    )
+    emit = store.make_emit(run, extra_sinks=guild_hooks.extra_sinks)
 
     try:
         runner = _select_runner()
         slate = await runner(region, horizon, emit)
         run.slate = slate
         run.status = "done"
+        await guild_hooks.close("completed", f"{len(slate.ranked_events)} events")
     except Exception as exc:
         run.status = "failed"
         run.error = f"{type(exc).__name__}: {exc}"
+        await guild_hooks.close("failed", None)
 
 
 @app.post("/slate", status_code=202, response_model=RunCreated)
 async def create_slate(request: SlateRequest) -> RunCreated:
     run = store.create(request.region, request.horizon)
-    emit = store.make_emit(run)
     run.task = asyncio.create_task(
-        _execute(run.run_id, request.region, request.horizon, emit)
+        _execute(
+            run.run_id,
+            request.region,
+            request.horizon,
+        )
     )
     return RunCreated(run_id=run.run_id)
 

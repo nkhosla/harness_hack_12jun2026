@@ -5,7 +5,7 @@ from __future__ import annotations
 import asyncio
 import os
 import uuid
-from collections.abc import Callable
+from collections.abc import Callable, Sequence
 from dataclasses import dataclass, field
 from typing import Literal
 
@@ -14,6 +14,7 @@ from schemas.models import ProgressEvent, Slate
 
 RunStatus = Literal["pending", "running", "done", "failed"]
 EmitFn = Callable[[str, str, str], None]
+ProgressSink = Callable[[ProgressEvent], None]
 
 
 @dataclass
@@ -44,7 +45,11 @@ class RunStore:
     def events_since(self, run: Run, since: int) -> list[ProgressEvent]:
         return [event for event in run.events if event.seq > since]
 
-    def make_emit(self, run: Run) -> EmitFn:
+    def make_emit(
+        self,
+        run: Run,
+        extra_sinks: Sequence[ProgressSink] = (),
+    ) -> EmitFn:
         def emit(agent: str, status: str, detail: str) -> None:
             event = ProgressEvent(
                 run_id=run.run_id,
@@ -55,6 +60,8 @@ class RunStore:
             )
             run._next_seq += 1
             run.events.append(event)
+            for sink in extra_sinks:
+                sink(event)
 
         return emit
 
