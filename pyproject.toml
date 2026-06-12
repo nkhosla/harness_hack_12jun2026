@@ -32,3 +32,6 @@ py-modules = ["api", "orchestrator"]
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["schemas*", "mocks*", "agents*", "tools*"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
