@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from mocks.fixtures import mock_event, mock_issues, mock_progress_events
+from mocks.fixtures import mock_event, mock_progress_events
 from orchestrator import run
 from schemas.models import EventRecommendation, Issue, Slate
 

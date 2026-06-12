@@ -13,6 +13,7 @@ dependencies = [
     "fastapi",
     "uvicorn[standard]",
     "httpx",
+    "feedparser",
     "python-dotenv",
     "anthropic",
     "pandas",
@@ -37,4 +38,4 @@ include = ["schemas*", "mocks*", "agents*", "tools*"]
 pythonpath = ["."]
 
 [tool.setuptools.package-data]
-tools = ["data/*.json"]
+tools = ["data/*.json", "resources/*.json"]
