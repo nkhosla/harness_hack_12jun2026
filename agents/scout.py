@@ -234,14 +234,14 @@ def run(region: str, *, refresh: bool = False) -> list[Issue]:
 
 _SAMPLE_DOCS: list[SourceDoc] = [
     SourceDoc(
-        title="Residents report discoloration in Bolin Creek after storms",
+        title="Residents report discoloration in Eno River after storms",
         text=(
-            "Carrboro homeowners say creek water turned brown and smelled "
+            "Hillsborough homeowners say creek water turned brown and smelled "
             "like sewage following heavy rain last week. Town public works promised "
             "testing results by Friday; neighborhood associations are planning a "
             "community meeting."
         ),
-        url="https://chapelboro.com/news/2026/06/bolin-creek-water-quality",
+        url="https://chapelboro.com/news/2026/06/eno-river-water-quality",
         kind="news",
     ),
     SourceDoc(
@@ -251,7 +251,7 @@ _SAMPLE_DOCS: list[SourceDoc] = [
             "Called 311 twice. Who's going to the city council briefing Thursday? "
             "We need answers before kids play outside again."
         ),
-        url="https://www.indyweek.com/news/orange/2026/06/carrboro-creek-concerns",
+        url="https://www.indyweek.com/news/orange/2026/06/hillsborough-creek-concerns",
         kind="social",
     ),
     SourceDoc(
@@ -265,24 +265,24 @@ _SAMPLE_DOCS: list[SourceDoc] = [
         kind="news",
     ),
     SourceDoc(
-        title="Northside rents keep climbing - where do longtime residents go?",
+        title="Efland rents keep climbing - where do longtime residents go?",
         text=(
-            "Another Northside landlord raised rents 18%. The proposed infill project "
+            "Another Efland landlord raised rents 18%. The proposed infill project "
             "near downtown is splitting neighbors: some want new units, others fear "
             "displacement of families who've lived here for decades."
         ),
-        url="https://chapelboro.com/news/2026/06/northside-housing-pressure",
+        url="https://chapelboro.com/news/2026/06/efland-housing-pressure",
         kind="social",
     ),
     SourceDoc(
-        title="Chapel Hill Transit proposes cutting two crosstown bus routes",
+        title="Orange County transit proposes cutting two crosstown bus routes",
         text=(
-            "Chapel Hill Transit unveiled a budget plan that would "
+            "Orange County transit unveiled a budget plan that would "
             "eliminate routes 25 and 34, citing a funding shortfall. Riders and "
-            "transit advocates say the cuts would hit working families and UNC staff "
+            "transit advocates say the cuts would hit working families and county staff "
             "hardest."
         ),
-        url="https://chapelboro.com/news/2026/06/cht-route-cuts",
+        url="https://chapelboro.com/news/2026/06/orange-county-transit-cuts",
         kind="news",
     ),
 ]

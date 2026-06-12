@@ -1,20 +1,20 @@
 {
-  "region": "NC HD-50: Caswell + Orange",
+  "region": "NC HD-50",
   "horizon": "next two weeks",
   "ranked_events": [
     {
       "issue": {
         "id": "issue-water-001",
-        "title": "Bolin Creek water quality concerns",
-        "area": "Carrboro, Orange County",
-        "summary": "Residents along Bolin Creek report discoloration and odor after recent storm runoff. The town board scheduled a public works briefing; neighborhood associations are organizing for answers.",
+        "title": "Eno River water quality concerns",
+        "area": "Hillsborough, Orange County",
+        "summary": "Residents along Eno River report discoloration and odor after recent storm runoff. The town board scheduled a public works briefing; neighborhood associations are organizing for answers.",
         "source_links": [
-          "https://chapelboro.com/news/2026/06/bolin-creek-water-quality",
-          "https://www.indyweek.com/news/orange/2026/06/carrboro-creek-concerns"
+          "https://chapelboro.com/news/2026/06/eno-river-water-quality",
+          "https://www.indyweek.com/news/orange/2026/06/hillsborough-creek-concerns"
         ],
         "salience": 0.92
       },
-      "area": "Carrboro, Orange County",
+      "area": "Hillsborough, Orange County",
       "proposed_date": "2026-06-17",
       "weather": {
         "summary": "Steady rain through Saturday afternoon",
@@ -24,15 +24,15 @@
         "recommended_format": "indoor"
       },
       "format": "indoor",
-      "venue_suggestion": "Carrboro Century Center community room",
-      "target_voters": "Soft precincts CB1, NC, and DA in Carrboro; environmentally engaged homeowners and renters near creek corridors",
+      "venue_suggestion": "Orange County Public Library in Hillsborough community room",
+      "target_voters": "Soft precincts H, HE, and HN in Hillsborough; environmentally engaged homeowners and renters near creek corridors",
       "talking_points": [
         "Commit to transparent water testing and public reporting timelines",
-        "Fund stormwater infrastructure upgrades along the Bolin Creek corridor",
+        "Fund stormwater infrastructure upgrades along the Eno River corridor",
         "Establish a resident advisory panel for creek-adjacent neighborhoods"
       ],
       "rationale": "Highest-salience issue in the district with an active neighborhood coalition. Rain forecast makes an indoor listening session the credible, weather-safe format this week.",
-      "draft_outreach": "Carrboro neighbors: join us Saturday for a community listening session on Bolin Creek water quality. Share what you're seeing, ask questions, and help shape our clean-water priorities. Indoor event \u2014 Carrboro Century Center, 2pm. RSVP link in bio."
+      "draft_outreach": "Hillsborough neighbors: join us Saturday for a community listening session on Eno River water quality. Share what you're seeing, ask questions, and help shape our clean-water priorities. Indoor event \u2014 Orange County Public Library in Hillsborough, 2pm. RSVP link in bio."
     },
     {
       "issue": {
@@ -69,16 +69,16 @@
     {
       "issue": {
         "id": "issue-housing-003",
-        "title": "Northside affordable housing crunch",
-        "area": "Northside, Chapel Hill, Orange County",
-        "summary": "Rising rents and limited inventory are squeezing longtime Northside residents. A proposed infill development has sparked debate over displacement versus new affordable units.",
+        "title": "Efland affordable housing crunch",
+        "area": "Efland, Orange County",
+        "summary": "Rising rents and limited inventory are squeezing longtime Efland residents. A proposed infill development has sparked debate over displacement versus new affordable units.",
         "source_links": [
-          "https://chapelboro.com/news/2026/06/northside-housing-pressure",
-          "https://www.dailytarheel.com/article/2026/06/northside-affordable-housing"
+          "https://chapelboro.com/news/2026/06/efland-housing-pressure",
+          "https://www.newsobserver.com/news/local/2026/06/efland-affordable-housing"
         ],
         "salience": 0.85
       },
-      "area": "Northside, Chapel Hill, Orange County",
+      "area": "Efland, Orange County",
       "proposed_date": "2026-06-23",
       "weather": {
         "summary": "Afternoon thunderstorms likely",
@@ -88,15 +88,15 @@
         "recommended_format": "indoor"
       },
       "format": "indoor",
-      "venue_suggestion": "Hargraves Community Center multipurpose hall",
-      "target_voters": "Renters and longtime homeowners in Northside precincts NS, TH1, and EH; seniors facing displacement pressure",
+      "venue_suggestion": "Efland-Cheeks Community Center multipurpose hall",
+      "target_voters": "Renters and longtime homeowners in Efland precinct EF and nearby Caldwell precinct CW; seniors facing displacement pressure",
       "talking_points": [
         "Require affordable-unit set-asides in new infill developments",
         "Expand tenant protections and anti-displacement resources",
-        "Invest in community land trusts for Northside"
+        "Invest in community land trusts for Efland"
       ],
-      "rationale": "Housing costs are climbing fastest in Northside, where turnout opportunity is high among renters who rarely hear from campaigns. Thunderstorms favor an indoor town hall.",
-      "draft_outreach": "Northside: rents are up and options are down. Come to a town hall on affordable housing and the proposed infill project \u2014 your voice shapes what gets built. Hargraves Community Center, Thursday 6:30pm."
+      "rationale": "Housing costs are climbing fastest in Efland, where turnout opportunity is high among renters who rarely hear from campaigns. Thunderstorms favor an indoor town hall.",
+      "draft_outreach": "Efland: rents are up and options are down. Come to a town hall on affordable housing and the proposed infill project \u2014 your voice shapes what gets built. Efland-Cheeks Community Center, Thursday 6:30pm."
     },
     {
       "issue": {
@@ -132,16 +132,16 @@
     {
       "issue": {
         "id": "issue-transit-005",
-        "title": "Chapel Hill Transit route cuts proposed",
-        "area": "Chapel Hill, Orange County",
-        "summary": "Chapel Hill Transit proposed eliminating two crosstown routes to close a budget shortfall. Riders and transit advocates are pushing back, citing disproportionate impact on working families and UNC staff.",
+        "title": "Orange County transit route cuts proposed",
+        "area": "Cedar Grove, Orange County",
+        "summary": "Orange County transit proposed eliminating two crosstown routes to close a budget shortfall. Riders and transit advocates are pushing back, citing disproportionate impact on working families and county staff.",
         "source_links": [
-          "https://chapelboro.com/news/2026/06/cht-route-cuts",
-          "https://www.dailytarheel.com/article/2026/06/chapel-hill-transit-cuts"
+          "https://chapelboro.com/news/2026/06/orange-county-transit-cuts",
+          "https://www.newsobserver.com/news/local/2026/06/orange-county-transit-cuts"
         ],
         "salience": 0.68
       },
-      "area": "Chapel Hill, Orange County",
+      "area": "Cedar Grove, Orange County",
       "proposed_date": "2026-06-29",
       "weather": {
         "summary": "Hot and humid, heat index near 100",
@@ -151,15 +151,15 @@
         "recommended_format": "indoor"
       },
       "format": "indoor",
-      "venue_suggestion": "Chapel Hill Public Library meeting room",
-      "target_voters": "Transit-dependent riders in Chapel Hill precincts ES, CO, and EA1; UNC staff and service workers on proposed cut routes",
+      "venue_suggestion": "Cedar Grove Community Center meeting room",
+      "target_voters": "Transit-dependent riders in Cedar Grove precincts CG, CX, and OG; county staff and service workers on proposed cut routes",
       "talking_points": [
         "Oppose route cuts that hit crosstown workers hardest",
-        "Fund Chapel Hill Transit through fair-share partner contributions",
+        "Fund Orange County transit through fair-share partner contributions",
         "Center rider testimony in any service-reduction decision"
       ],
       "rationale": "Route cuts are imminent and riders are already organizing. An indoor forum near downtown stops makes participation easy for the people most affected.",
-      "draft_outreach": "Chapel Hill riders: proposed transit cuts would hit crosstown routes first. Join a rider forum at the Chapel Hill Public Library to share your story and fight for reliable transit. Wednesday 5:30pm."
+      "draft_outreach": "Cedar Grove riders: proposed transit cuts would hit crosstown routes first. Join a rider forum at the Cedar Grove Community Center to share your story and fight for reliable transit. Wednesday 5:30pm."
     }
   ]
 }

@@ -1,7 +1,8 @@
 import pytest
 
+from mocks.fixtures import mock_issues
 from schemas.models import TurnoutSummary
-from tools.turnout import load_turnout, turnout_summary
+from tools.turnout import _filter_area, load_turnout, turnout_summary
 
 
 def test_load_turnout_has_expected_demo_scope() -> None:
@@ -25,6 +26,21 @@ def test_turnout_summary_supports_counties_and_hd50() -> None:
     assert orange.area == "Orange"
     assert caswell.area == "Caswell"
     assert hd50.area == "HD-50"
+
+
+def test_turnout_summary_supports_current_issue_areas() -> None:
+    for issue in mock_issues():
+        summary = turnout_summary(issue.area)
+        assert isinstance(summary, TurnoutSummary)
+        assert summary.soft_precincts, issue.area
+
+
+def test_issue_area_aliases_resolve_to_hd50_precincts() -> None:
+    df = load_turnout()
+    for issue in mock_issues():
+        filtered = _filter_area(df, issue.area)
+        assert not filtered.empty, issue.area
+        assert set(filtered["nc_house_district"]) == {50}, issue.area
 
 
 def test_turnout_summary_accepts_numeric_district() -> None:

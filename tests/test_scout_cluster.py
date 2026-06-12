@@ -19,7 +19,7 @@ def test_cluster_maps_draft_issues_sorted_by_salience(monkeypatch) -> None:
             ),
             _DraftIssue(
                 title="High salience issue",
-                area="Carrboro, Orange County",
+                area="Hillsborough, Orange County",
                 summary="Very hot local concern.",
                 salience=0.95,
                 source_urls=["https://example.com/high"],
@@ -71,7 +71,7 @@ def test_cluster_filters_hallucinated_source_urls(monkeypatch) -> None:
         issues=[
             _DraftIssue(
                 title="Water quality",
-                area="Carrboro, Orange County",
+                area="Hillsborough, Orange County",
                 summary="Creek concerns after storms.",
                 salience=0.9,
                 source_urls=[
@@ -119,7 +119,7 @@ def test_cluster_drops_drafts_with_no_grounded_source_urls(monkeypatch) -> None:
             ),
             _DraftIssue(
                 title="Grounded issue",
-                area="Chapel Hill, Orange County",
+                area="Cedar Grove, Orange County",
                 summary="Backed by input.",
                 salience=0.5,
                 source_urls=["https://example.com/real"],
@@ -157,7 +157,7 @@ def test_cluster_drops_drafts_with_no_grounded_source_urls(monkeypatch) -> None:
 def test_cluster_issue_ids_are_stable_across_draft_order(monkeypatch) -> None:
     high = _DraftIssue(
         title="High salience issue",
-        area="Carrboro, Orange County",
+        area="Hillsborough, Orange County",
         summary="Very hot local concern.",
         salience=0.95,
         source_urls=["https://example.com/high"],
@@ -210,7 +210,7 @@ def test_cluster_prompt_treats_sources_as_untrusted_data(monkeypatch) -> None:
                     issues=[
                         _DraftIssue(
                             title="Local issue",
-                            area="Chapel Hill, Orange County",
+                            area="Cedar Grove, Orange County",
                             summary="Summary.",
                             salience=0.5,
                             source_urls=["https://example.com/doc"],
@@ -261,7 +261,7 @@ def test_cluster_treats_region_as_untrusted_data(monkeypatch) -> None:
                     issues=[
                         _DraftIssue(
                             title="Local issue",
-                            area="Chapel Hill, Orange County",
+                            area="Cedar Grove, Orange County",
                             summary="Summary.",
                             salience=0.5,
                             source_urls=["https://example.com/doc"],

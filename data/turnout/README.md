@@ -1,6 +1,6 @@
 # Turnout data — NC HD-50 (Caswell + Orange counties)
 
-Official precinct-level data from the [NC State Board of Elections](https://dl.ncsbe.gov/) for the 2020, 2022, and 2024 general elections, filtered to Caswell and Orange counties (the demo region: NC House District 50 — Chapel Hill/Carrboro college-town precincts plus rural Caswell). All aggregate public election results — **no voter file, no PII**, safe to show on stage.
+Official precinct-level data from the [NC State Board of Elections](https://dl.ncsbe.gov/) for the 2020, 2022, and 2024 general elections, filtered to Caswell and Orange counties (the demo region: NC House District 50 — Hillsborough/Efland and rural Orange precincts plus Caswell County). All aggregate public election results — **no voter file, no PII**, safe to show on stage.
 
 ## What teammates should use
 
@@ -15,7 +15,7 @@ turnout_summary("HD-50")
 load_turnout()               # -> pandas DataFrame of the CSV
 ```
 
-"Soft" precincts = big registered-voter pools with the biggest presidential-to-midterm drop-off — the highest-leverage event targets. (Sanity check that the metric works: Orange County's softest precinct is UNC campus.)
+"Soft" precincts = big registered-voter pools with the biggest presidential-to-midterm drop-off — the highest-leverage event targets. For `HD-50`, the largest opportunities are Orange County precincts such as Cheeks and Grady Brown plus Caswell's larger rural precincts.
 
 ### Columns
 
@@ -23,7 +23,7 @@ load_turnout()               # -> pandas DataFrame of the CSV
 |---|---|
 | `election_date` | `2020-11-03`, `2022-11-08`, `2024-11-05` |
 | `county` | `CASWELL` or `ORANGE` |
-| `precinct` / `precinct_name` | NCSBE precinct code (string) and name, e.g. `NS` / `NORTHSIDE` |
+| `precinct` / `precinct_name` | NCSBE precinct code (string) and name, e.g. `H` / `HILLSBOROUGH` |
 | `registered_total` | registered voters at that election |
 | `reg_age_18_25` … `reg_age_over_66` | registered voters by age bucket (event-audience signal: students vs seniors) |
 | `ballots_cast` | votes + overvotes + undervotes on the top-of-ticket contest (President; US Senate in 2022) — exact, every ballot has that contest |

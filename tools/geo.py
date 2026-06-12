@@ -6,17 +6,17 @@ matching, then to the district center, so every Scout-emitted area resolves.
 """
 from __future__ import annotations
 
-CHAPEL_HILL = (35.9132, -79.0558)
-CARRBORO = (35.9101, -79.0753)
-NORTHSIDE = (35.9163, -79.0612)
+HILLSBOROUGH = (36.0754, -79.0997)
+EFLAND = (36.0810, -79.1692)
+CEDAR_GROVE = (36.1743, -79.1670)
 YANCEYVILLE = (36.4040, -79.3361)
 MILTON = (36.5382, -79.2086)
 DISTRICT_CENTER = (36.1500, -79.1900)  # midpoint of the HD-50 demo region
 
 _EXACT: dict[str, tuple[float, float]] = {
-    "chapel hill, orange county": CHAPEL_HILL,
-    "carrboro, orange county": CARRBORO,
-    "northside, chapel hill, orange county": NORTHSIDE,
+    "hillsborough, orange county": HILLSBOROUGH,
+    "efland, orange county": EFLAND,
+    "cedar grove, orange county": CEDAR_GROVE,
     "yanceyville, caswell county": YANCEYVILLE,
     "milton, caswell county": MILTON,
     "northern caswell county": MILTON,
@@ -24,14 +24,14 @@ _EXACT: dict[str, tuple[float, float]] = {
 
 # Checked in order: most specific keyword combos first.
 _KEYWORDS: list[tuple[tuple[str, ...], tuple[float, float]]] = [
-    (("northside",), NORTHSIDE),
-    (("chapel", "hill"), CHAPEL_HILL),
-    (("carrboro",), CARRBORO),
+    (("hillsborough",), HILLSBOROUGH),
+    (("efland",), EFLAND),
+    (("cedar", "grove"), CEDAR_GROVE),
     (("yanceyville",), YANCEYVILLE),
     (("northern", "caswell"), MILTON),
     (("milton",), MILTON),
     (("caswell",), YANCEYVILLE),
-    (("orange",), CHAPEL_HILL),
+    (("orange",), HILLSBOROUGH),
 ]
 
 

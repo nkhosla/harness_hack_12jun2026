@@ -12,16 +12,16 @@ _BASE_DATE = date(2026, 6, 15)
 _ISSUES: list[Issue] = [
     Issue(
         id="issue-water-001",
-        title="Bolin Creek water quality concerns",
-        area="Carrboro, Orange County",
+        title="Eno River water quality concerns",
+        area="Hillsborough, Orange County",
         summary=(
-            "Residents along Bolin Creek report discoloration and odor after recent "
+            "Residents along Eno River report discoloration and odor after recent "
             "storm runoff. The town board scheduled a public works briefing; neighborhood "
             "associations are organizing for answers."
         ),
         source_links=[
-            "https://chapelboro.com/news/2026/06/bolin-creek-water-quality",
-            "https://www.indyweek.com/news/orange/2026/06/carrboro-creek-concerns",
+            "https://chapelboro.com/news/2026/06/eno-river-water-quality",
+            "https://www.indyweek.com/news/orange/2026/06/hillsborough-creek-concerns",
         ],
         salience=0.92,
     ),
@@ -42,16 +42,16 @@ _ISSUES: list[Issue] = [
     ),
     Issue(
         id="issue-housing-003",
-        title="Northside affordable housing crunch",
-        area="Northside, Chapel Hill, Orange County",
+        title="Efland affordable housing crunch",
+        area="Efland, Orange County",
         summary=(
             "Rising rents and limited inventory are squeezing longtime "
-            "Northside residents. A proposed infill development has sparked debate "
+            "Efland residents. A proposed infill development has sparked debate "
             "over displacement versus new affordable units."
         ),
         source_links=[
-            "https://chapelboro.com/news/2026/06/northside-housing-pressure",
-            "https://www.dailytarheel.com/article/2026/06/northside-affordable-housing",
+            "https://chapelboro.com/news/2026/06/efland-housing-pressure",
+            "https://www.newsobserver.com/news/local/2026/06/efland-affordable-housing",
         ],
         salience=0.85,
     ),
@@ -71,16 +71,16 @@ _ISSUES: list[Issue] = [
     ),
     Issue(
         id="issue-transit-005",
-        title="Chapel Hill Transit route cuts proposed",
-        area="Chapel Hill, Orange County",
+        title="Orange County transit route cuts proposed",
+        area="Cedar Grove, Orange County",
         summary=(
-            "Chapel Hill Transit proposed eliminating two crosstown routes to close a "
+            "Orange County transit proposed eliminating two crosstown routes to close a "
             "budget shortfall. Riders and transit advocates are pushing back, citing "
-            "disproportionate impact on working families and UNC staff."
+            "disproportionate impact on working families and county staff."
         ),
         source_links=[
-            "https://chapelboro.com/news/2026/06/cht-route-cuts",
-            "https://www.dailytarheel.com/article/2026/06/chapel-hill-transit-cuts",
+            "https://chapelboro.com/news/2026/06/orange-county-transit-cuts",
+            "https://www.newsobserver.com/news/local/2026/06/orange-county-transit-cuts",
         ],
         salience=0.68,
     ),
@@ -126,14 +126,14 @@ _WEATHER_BY_RANK: list[Weather] = [
 
 _EVENT_BRIEFS: list[dict[str, object]] = [
     {
-        "venue_suggestion": "Carrboro Century Center community room",
+        "venue_suggestion": "Orange County Public Library in Hillsborough community room",
         "target_voters": (
-            "Soft precincts CB1, NC, and DA in Carrboro; environmentally "
+            "Soft precincts H, HE, and HN in Hillsborough; environmentally "
             "engaged homeowners and renters near creek corridors"
         ),
         "talking_points": [
             "Commit to transparent water testing and public reporting timelines",
-            "Fund stormwater infrastructure upgrades along the Bolin Creek corridor",
+            "Fund stormwater infrastructure upgrades along the Eno River corridor",
             "Establish a resident advisory panel for creek-adjacent neighborhoods",
         ],
         "rationale": (
@@ -142,10 +142,10 @@ _EVENT_BRIEFS: list[dict[str, object]] = [
             "credible, weather-safe format this week."
         ),
         "draft_outreach": (
-            "Carrboro neighbors: join us Saturday for a community listening "
-            "session on Bolin Creek water quality. Share what you're seeing, ask "
+            "Hillsborough neighbors: join us Saturday for a community listening "
+            "session on Eno River water quality. Share what you're seeing, ask "
             "questions, and help shape our clean-water priorities. Indoor event — "
-            "Carrboro Century Center, 2pm. RSVP link in bio."
+            "Orange County Public Library in Hillsborough, 2pm. RSVP link in bio."
         ),
     },
     {
@@ -171,25 +171,25 @@ _EVENT_BRIEFS: list[dict[str, object]] = [
         ),
     },
     {
-        "venue_suggestion": "Hargraves Community Center multipurpose hall",
+        "venue_suggestion": "Efland-Cheeks Community Center multipurpose hall",
         "target_voters": (
-            "Renters and longtime homeowners in Northside precincts NS, TH1, "
-            "and EH; seniors facing displacement pressure"
+            "Renters and longtime homeowners in Efland precinct EF and nearby "
+            "Caldwell precinct CW; seniors facing displacement pressure"
         ),
         "talking_points": [
             "Require affordable-unit set-asides in new infill developments",
             "Expand tenant protections and anti-displacement resources",
-            "Invest in community land trusts for Northside",
+            "Invest in community land trusts for Efland",
         ],
         "rationale": (
-            "Housing costs are climbing fastest in Northside, where turnout "
+            "Housing costs are climbing fastest in Efland, where turnout "
             "opportunity is high among renters who rarely hear from campaigns. "
             "Thunderstorms favor an indoor town hall."
         ),
         "draft_outreach": (
-            "Northside: rents are up and options are down. Come to a town hall "
+            "Efland: rents are up and options are down. Come to a town hall "
             "on affordable housing and the proposed infill project — your voice "
-            "shapes what gets built. Hargraves Community Center, Thursday 6:30pm."
+            "shapes what gets built. Efland-Cheeks Community Center, Thursday 6:30pm."
         ),
     },
     {
@@ -215,14 +215,14 @@ _EVENT_BRIEFS: list[dict[str, object]] = [
         ),
     },
     {
-        "venue_suggestion": "Chapel Hill Public Library meeting room",
+        "venue_suggestion": "Cedar Grove Community Center meeting room",
         "target_voters": (
-            "Transit-dependent riders in Chapel Hill precincts ES, CO, and EA1; "
-            "UNC staff and service workers on proposed cut routes"
+            "Transit-dependent riders in Cedar Grove precincts CG, CX, and OG; "
+            "county staff and service workers on proposed cut routes"
         ),
         "talking_points": [
             "Oppose route cuts that hit crosstown workers hardest",
-            "Fund Chapel Hill Transit through fair-share partner contributions",
+            "Fund Orange County transit through fair-share partner contributions",
             "Center rider testimony in any service-reduction decision",
         ],
         "rationale": (
@@ -231,8 +231,8 @@ _EVENT_BRIEFS: list[dict[str, object]] = [
             "people most affected."
         ),
         "draft_outreach": (
-            "Chapel Hill riders: proposed transit cuts would hit crosstown routes first. "
-            "Join a rider forum at the Chapel Hill Public Library to share your story "
+            "Cedar Grove riders: proposed transit cuts would hit crosstown routes first. "
+            "Join a rider forum at the Cedar Grove Community Center to share your story "
             "and fight for reliable transit. Wednesday 5:30pm."
         ),
     },
@@ -300,7 +300,7 @@ def mock_progress_events(run_id: str = "mock-run-001") -> list[ProgressEvent]:
     add(
         "scout",
         "tool_call",
-        "Fetching RSS feeds for Chapelboro, The Caswell Messenger, and The Daily Tar Heel",
+        "Fetching RSS feeds for Chapelboro, The Caswell Messenger, and The News & Observer",
     )
     add(
         "scout",

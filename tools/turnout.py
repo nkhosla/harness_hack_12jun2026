@@ -23,6 +23,28 @@ DATA = Path(__file__).parent.parent / "data" / "turnout" / "processed" / "precin
 LATEST_PRESIDENTIAL = "2024-11-05"
 LATEST_MIDTERM = "2022-11-08"
 
+AREA_PRECINCTS: dict[str, tuple[tuple[str, str], ...]] = {
+    "hillsborough": (
+        ("ORANGE", "H"),
+        ("ORANGE", "HE"),
+        ("ORANGE", "HN"),
+        ("ORANGE", "WH"),
+    ),
+    "efland": (("ORANGE", "EF"),),
+    "cedar grove": (("ORANGE", "CG"),),
+    "cheeks": (("ORANGE", "CX"),),
+    "orange grove": (("ORANGE", "OG"),),
+    "caldwell": (("ORANGE", "CW"),),
+    "white cross": (("ORANGE", "WC"),),
+    "yanceyville": (("CASWELL", "YANC"),),
+    "milton": (("CASWELL", "MILT"),),
+    "northern caswell": (
+        ("CASWELL", "LEAS"),
+        ("CASWELL", "MILT"),
+        ("CASWELL", "STON"),
+    ),
+}
+
 
 @lru_cache(maxsize=1)
 def load_turnout() -> pd.DataFrame:
@@ -30,11 +52,22 @@ def load_turnout() -> pd.DataFrame:
 
 
 def _filter_area(df: pd.DataFrame, area: str) -> pd.DataFrame:
-    """area: a county name ("Orange", "Caswell") or a house district ("HD-50", "50")."""
+    """area: county, house district, or known Scout-emitted locality."""
     a = area.strip()
+    key = a.casefold()
     if a.upper().startswith("HD-") or a.isdigit():
         district = int(a.upper().removeprefix("HD-"))
         return df[df["nc_house_district"] == district]
+    for alias, precincts in AREA_PRECINCTS.items():
+        if alias in key:
+            mask = pd.Series(False, index=df.index)
+            for county, precinct in precincts:
+                mask |= (df["county"] == county) & (df["precinct"] == precinct)
+            return df[mask]
+    if "orange county" in key:
+        return df[df["county"] == "ORANGE"]
+    if "caswell county" in key:
+        return df[df["county"] == "CASWELL"]
     return df[df["county"].str.casefold() == a.casefold()]
 
 

@@ -9,10 +9,10 @@ def _in_north_carolina(lat: float, lon: float) -> bool:
 
 
 def test_known_demo_areas_resolve_to_distinct_coords():
-    chapel_hill = resolve("Chapel Hill, Orange County")
+    cedar_grove = resolve("Cedar Grove, Orange County")
     yanceyville = resolve("Yanceyville, Caswell County")
-    assert chapel_hill != yanceyville
-    assert _in_north_carolina(*chapel_hill)
+    assert cedar_grove != yanceyville
+    assert _in_north_carolina(*cedar_grove)
     assert _in_north_carolina(*yanceyville)
 
 
@@ -25,8 +25,8 @@ def test_lookup_is_case_insensitive():
 def test_keyword_fallback_matches_partial_area_names():
     # Scout-invented phrasing should still land in the right county
     assert resolve("rural northern Caswell") == resolve("northern Caswell County")
-    assert resolve("Carrboro neighborhoods") == resolve(
-        "Carrboro, Orange County"
+    assert resolve("Hillsborough neighborhoods") == resolve(
+        "Hillsborough, Orange County"
     )
 
 

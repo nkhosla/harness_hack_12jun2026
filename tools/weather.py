@@ -139,9 +139,9 @@ if __name__ == "__main__":
     async def main() -> None:
         target = date.today() + timedelta(days=2)
         for area in [
-            "Carrboro, Orange County",
-            "Northside, Chapel Hill, Orange County",
-            "Chapel Hill, Orange County",
+            "Hillsborough, Orange County",
+            "Efland, Orange County",
+            "Cedar Grove, Orange County",
             "Yanceyville, Caswell County",
             "northern Caswell County",
         ]:
