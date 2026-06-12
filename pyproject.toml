@@ -13,6 +13,7 @@ dependencies = [
     "fastapi",
     "uvicorn[standard]",
     "httpx",
+    "feedparser",
     "python-dotenv",
     "anthropic",
     "pandas",
@@ -20,6 +21,9 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+guild = [
+    "httpx",
+]
 dev = [
     "pytest",
     "pytest-asyncio",
@@ -27,8 +31,15 @@ dev = [
 ]
 
 [tool.setuptools]
-py-modules = ["api", "orchestrator"]
+py-modules = ["api", "orchestrator", "runstore"]
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["schemas*", "mocks*", "agents*", "tools*"]
+include = ["schemas*", "mocks*", "agents*", "tools*", "guild_adapter*"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+pythonpath = ["."]
+
+[tool.setuptools.package-data]
+tools = ["data/*.json", "resources/*.json"]
