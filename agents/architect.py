@@ -7,9 +7,11 @@ from anthropic import AsyncAnthropic
 from dotenv import load_dotenv
 from pydantic import BaseModel, ConfigDict
 
-from schemas.models import Issue, TurnoutSummary, Weather
+from schemas.models import EventRecommendation, Issue, TurnoutSummary, Weather
 
 load_dotenv()
+
+MODEL = "claude-opus-4-8"
 
 SYSTEM_PROMPT = """\
 You are an experienced campaign field and events organizer for local and state races.
@@ -20,6 +22,16 @@ issue — generic advice is not useful.
 
 Respond strictly through the provided structured output schema. Every field must be \
 grounded in the inputs you receive."""
+
+DRAFT_SYSTEM_PROMPT = (
+    "You are a campaign field organizer. Given the details of a planned "
+    "community event, write one short, ready-to-send outreach message (a "
+    "social post or email body) that a volunteer could send in thirty "
+    "seconds. Address the target audience directly, name the issue, include "
+    "the venue and date when given, and end with a clear call to action. "
+    "Keep it under 80 words. Return ONLY the message text - no preamble, no "
+    "subject line, no surrounding quotation marks."
+)
 
 
 class EventIdeation(BaseModel):
@@ -68,6 +80,20 @@ turnout.target_segments.
 feasibility together."""
 
 
+def _draft_prompt(event: EventRecommendation) -> str:
+    points = "\n".join(f"- {p}" for p in event.talking_points)
+    return (
+        f"Issue: {event.issue.title}\n"
+        f"Summary: {event.issue.summary}\n"
+        f"Area: {event.area}\n"
+        f"Date: {event.proposed_date.strftime('%A, %B %d')}\n"
+        f"Format: {event.format}\n"
+        f"Venue: {event.venue_suggestion}\n"
+        f"Target voters: {event.target_voters}\n"
+        f"Talking points:\n{points}"
+    )
+
+
 async def ideate(
     issue: Issue,
     weather: Weather,
@@ -78,7 +104,7 @@ async def ideate(
     """Generate the Claude-authored portion of an EventRecommendation."""
     client = client or AsyncAnthropic()
     resp = await client.with_options(timeout=30).messages.parse(
-        model="claude-opus-4-8",
+        model=MODEL,
         max_tokens=2000,
         output_config={"effort": "medium"},
         system=SYSTEM_PROMPT,
@@ -88,8 +114,24 @@ async def ideate(
     return resp.parsed_output
 
 
+async def draft(
+    event: EventRecommendation,
+    client: AsyncAnthropic | None = None,
+) -> EventRecommendation:
+    """Generate sendable outreach copy and return a copy with draft_outreach filled."""
+    client = client or AsyncAnthropic()
+    response = await client.messages.create(
+        model=MODEL,
+        max_tokens=1024,
+        system=DRAFT_SYSTEM_PROMPT,
+        messages=[{"role": "user", "content": _draft_prompt(event)}],
+    )
+    text = next((b.text for b in response.content if b.type == "text"), "").strip()
+    return event.model_copy(update={"draft_outreach": text})
+
+
 if __name__ == "__main__":
-    from mocks.fixtures import mock_issues
+    from mocks.fixtures import mock_event, mock_issues
 
     issue = mock_issues()[0]
     weather = Weather(
@@ -105,9 +147,15 @@ if __name__ == "__main__":
         target_segments=["infrequent midterm voters", "new registrants"],
         notes="Coalition-active neighborhoods near the creek.",
     )
-    draft = asyncio.run(ideate(issue, weather, turnout))
-    assert isinstance(draft, EventIdeation)
-    assert draft.format == weather.recommended_format
-    assert 3 <= len(draft.talking_points) <= 6
-    assert draft.venue_suggestion and draft.target_voters and draft.rationale
-    print(draft.model_dump_json(indent=2))
+    ideation = asyncio.run(ideate(issue, weather, turnout))
+    assert isinstance(ideation, EventIdeation)
+    assert ideation.format == weather.recommended_format
+    assert 3 <= len(ideation.talking_points) <= 6
+    assert ideation.venue_suggestion and ideation.target_voters and ideation.rationale
+    print(ideation.model_dump_json(indent=2))
+
+    sample = mock_event().model_copy(update={"draft_outreach": None})
+    drafted = asyncio.run(draft(sample))
+    print(drafted.draft_outreach)
+    assert drafted.draft_outreach, "draft_outreach should be non-empty"
+    print("\nOK: ideate() and draft() completed")
