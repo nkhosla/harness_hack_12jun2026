@@ -32,3 +32,6 @@ py-modules = ["api", "orchestrator"]
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["schemas*", "mocks*", "agents*", "tools*"]
+
+[tool.setuptools.package-data]
+tools = ["data/*.json"]
