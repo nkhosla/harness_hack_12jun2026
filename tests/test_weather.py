@@ -148,3 +148,25 @@ def test_raises_when_both_attempts_fail(tmp_path):
         asyncio.run(
             get_weather("Ocala, Marion County", TARGET, transport=transport, cache_dir=tmp_path)
         )
+
+
+def test_does_not_retry_client_error(tmp_path):
+    import pytest
+
+    calls: list[str] = []
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        calls.append(str(request.url))
+        return httpx.Response(404)
+
+    with pytest.raises(httpx.HTTPStatusError):
+        asyncio.run(
+            get_weather(
+                "Ocala, Marion County",
+                TARGET,
+                transport=httpx.MockTransport(handler),
+                cache_dir=tmp_path,
+            )
+        )
+
+    assert len(calls) == 1

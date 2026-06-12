@@ -7,7 +7,6 @@ runs never hang on the network. Precip/heat map to indoor/outdoor.
 """
 from __future__ import annotations
 
-import json
 import re
 from datetime import date
 from pathlib import Path
@@ -28,6 +27,12 @@ _DEFAULT_CACHE_DIR = Path(__file__).resolve().parent.parent / "data" / "cache" /
 # Outdoor events are a bad idea in rain or extreme heat.
 _PRECIP_INDOOR_THRESHOLD = 0.35
 _HEAT_INDOOR_THRESHOLD_F = 92.0
+
+
+def _is_retryable(exc: httpx.HTTPError) -> bool:
+    if isinstance(exc, httpx.HTTPStatusError):
+        return exc.response.status_code >= 500
+    return isinstance(exc, httpx.RequestError)
 
 
 def _slug(text: str) -> str:
@@ -113,8 +118,10 @@ async def get_weather(
     ) as client:
         try:
             periods = await _fetch_periods(client, lat, lon)
-        except httpx.HTTPError:
-            # NWS throws intermittent 500s; one retry de-risks the live demo.
+        except httpx.HTTPError as exc:
+            if not _is_retryable(exc):
+                raise
+            # NWS throws intermittent 5xxs; one retry de-risks the live demo.
             periods = await _fetch_periods(client, lat, lon)
 
     weather = _build_weather(periods, target_date)
