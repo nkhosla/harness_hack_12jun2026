@@ -10,3 +10,10 @@ out/
 *.tsbuildinfo
 next-env.d.ts
 .env*.local
+.venv/
+.cache/
+.pytest-tmp/
+.pytest_cache/
+build/
+dist/
+data/cache/

@@ -12,75 +12,75 @@ _BASE_DATE = date(2026, 6, 15)
 _ISSUES: list[Issue] = [
     Issue(
         id="issue-water-001",
-        title="Alachua Creek water quality concerns",
-        area="north Gainesville, Alachua County",
+        title="Eno River water quality concerns",
+        area="Hillsborough, Orange County",
         summary=(
-            "Residents near Alachua Creek report discoloration and odor after recent "
-            "storm runoff. City council scheduled a public works briefing; neighborhood "
+            "Residents along Eno River report discoloration and odor after recent "
+            "storm runoff. The town board scheduled a public works briefing; neighborhood "
             "associations are organizing for answers."
         ),
         source_links=[
-            "https://www.gainesville.com/story/news/local/2026/06/alachua-creek-water-quality",
-            "https://www.wuft.org/news/2026/06/12/north-gainesville-water-concerns",
+            "https://chapelboro.com/news/2026/06/eno-river-water-quality",
+            "https://www.indyweek.com/news/orange/2026/06/hillsborough-creek-concerns",
         ],
         salience=0.92,
     ),
     Issue(
         id="issue-school-002",
-        title="Marion County school funding shortfall",
-        area="Ocala, Marion County",
+        title="Caswell County school funding shortfall",
+        area="Yanceyville, Caswell County",
         summary=(
-            "The Marion County School Board faces a budget gap heading into fall, "
+            "The Caswell County Board of Education faces a budget gap heading into fall, "
             "with proposed cuts to arts and after-school programs. Parent groups "
             "and teachers' associations are mobilizing ahead of the July budget vote."
         ),
         source_links=[
-            "https://www.ocala.com/story/news/education/2026/06/marion-school-budget-gap",
-            "https://www.wuft.org/news/2026/06/10/marion-county-school-funding",
+            "https://www.caswellmessenger.com/news/2026/06/school-budget-gap",
+            "https://www.newsobserver.com/news/local/2026/06/caswell-school-funding",
         ],
         salience=0.88,
     ),
     Issue(
         id="issue-housing-003",
-        title="East Gainesville affordable housing crunch",
-        area="east Gainesville, Alachua County",
+        title="Efland affordable housing crunch",
+        area="Efland, Orange County",
         summary=(
-            "Rising rents and limited inventory are squeezing longtime east "
-            "Gainesville residents. A proposed infill development has sparked debate "
+            "Rising rents and limited inventory are squeezing longtime "
+            "Efland residents. A proposed infill development has sparked debate "
             "over displacement versus new affordable units."
         ),
         source_links=[
-            "https://www.gainesville.com/story/news/local/2026/06/east-gainesville-housing",
-            "https://www.wuft.org/news/2026/06/08/affordable-housing-alachua",
+            "https://chapelboro.com/news/2026/06/efland-housing-pressure",
+            "https://www.newsobserver.com/news/local/2026/06/efland-affordable-housing",
         ],
         salience=0.85,
     ),
     Issue(
         id="issue-broadband-004",
-        title="Rural broadband gaps in western Marion",
-        area="western Marion County",
+        title="Rural broadband gaps in northern Caswell",
+        area="Milton, Caswell County",
         summary=(
-            "Farmers and small businesses west of Ocala report unreliable internet "
+            "Farmers and small businesses around Milton report unreliable internet "
             "after a provider delayed fiber expansion. County commissioners are "
             "weighing a public-private partnership to close coverage gaps."
         ),
         source_links=[
-            "https://www.ocala.com/story/news/local/2026/06/western-marion-broadband",
+            "https://www.caswellmessenger.com/news/2026/06/northern-caswell-broadband",
         ],
         salience=0.72,
     ),
     Issue(
         id="issue-transit-005",
-        title="RTS bus route cuts proposed",
-        area="Gainesville, Alachua County",
+        title="Orange County transit route cuts proposed",
+        area="Cedar Grove, Orange County",
         summary=(
-            "Gainesville RTS proposed eliminating two east-side routes to close a "
+            "Orange County transit proposed eliminating two crosstown routes to close a "
             "budget shortfall. Riders and transit advocates are pushing back, citing "
-            "disproportionate impact on working families and UF staff."
+            "disproportionate impact on working families and county staff."
         ),
         source_links=[
-            "https://www.gainesville.com/story/news/local/2026/06/rts-route-cuts",
-            "https://www.wuft.org/news/2026/06/11/gainesville-transit-cuts",
+            "https://chapelboro.com/news/2026/06/orange-county-transit-cuts",
+            "https://www.newsobserver.com/news/local/2026/06/orange-county-transit-cuts",
         ],
         salience=0.68,
     ),
@@ -126,14 +126,14 @@ _WEATHER_BY_RANK: list[Weather] = [
 
 _EVENT_BRIEFS: list[dict[str, object]] = [
     {
-        "venue_suggestion": "Thelma A. Boltin Center community room",
+        "venue_suggestion": "Orange County Public Library in Hillsborough community room",
         "target_voters": (
-            "Soft precincts 14, 22, and 31 in north Gainesville; environmentally "
+            "Soft precincts H, HE, and HN in Hillsborough; environmentally "
             "engaged homeowners and renters near creek corridors"
         ),
         "talking_points": [
             "Commit to transparent water testing and public reporting timelines",
-            "Fund stormwater infrastructure upgrades in north Gainesville",
+            "Fund stormwater infrastructure upgrades along the Eno River corridor",
             "Establish a resident advisory panel for creek-adjacent neighborhoods",
         ],
         "rationale": (
@@ -142,17 +142,17 @@ _EVENT_BRIEFS: list[dict[str, object]] = [
             "credible, weather-safe format this week."
         ),
         "draft_outreach": (
-            "North Gainesville neighbors: join us Saturday for a community listening "
-            "session on Alachua Creek water quality. Share what you're seeing, ask "
+            "Hillsborough neighbors: join us Saturday for a community listening "
+            "session on Eno River water quality. Share what you're seeing, ask "
             "questions, and help shape our clean-water priorities. Indoor event — "
-            "Thelma A. Boltin Center, 2pm. RSVP link in bio."
+            "Orange County Public Library in Hillsborough, 2pm. RSVP link in bio."
         ),
     },
     {
-        "venue_suggestion": "Citizens' Circle at Tuscawilla Park",
+        "venue_suggestion": "Yanceyville Town Square gazebo",
         "target_voters": (
-            "Parents and educators in Marion County precincts 8, 12, and 19; "
-            "soft turnout among suburban families in southwest Ocala"
+            "Parents and educators in Caswell precincts YANC, PELH, and PROVI; "
+            "soft turnout among rural families outside Yanceyville"
         ),
         "talking_points": [
             "Protect classroom funding and after-school programs",
@@ -160,42 +160,42 @@ _EVENT_BRIEFS: list[dict[str, object]] = [
             "Push for transparent budget hearings before the July vote",
         ],
         "rationale": (
-            "School funding is the top Marion County conversation with a hard "
+            "School funding is the top Caswell County conversation with a hard "
             "budget deadline. Clear weather supports an outdoor rally that draws "
             "families and local press."
         ),
         "draft_outreach": (
-            "Marion County families: our schools need us before the July budget vote. "
-            "Join us at Tuscawilla Park this Sunday for a rally to protect classroom "
+            "Caswell County families: our schools need us before the July budget vote. "
+            "Join us at the Yanceyville Town Square this Sunday for a rally to protect classroom "
             "funding and after-school programs. Bring signs, bring neighbors."
         ),
     },
     {
-        "venue_suggestion": "Eastside Community Center multipurpose hall",
+        "venue_suggestion": "Efland-Cheeks Community Center multipurpose hall",
         "target_voters": (
-            "Renters and longtime homeowners in east Gainesville precincts 5, 9, "
-            "and 17; seniors facing displacement pressure"
+            "Renters and longtime homeowners in Efland precinct EF and nearby "
+            "Caldwell precinct CW; seniors facing displacement pressure"
         ),
         "talking_points": [
             "Require affordable-unit set-asides in new infill developments",
             "Expand tenant protections and anti-displacement resources",
-            "Invest in community land trusts for east Gainesville",
+            "Invest in community land trusts for Efland",
         ],
         "rationale": (
-            "Housing costs are climbing fastest on the east side, where turnout "
+            "Housing costs are climbing fastest in Efland, where turnout "
             "opportunity is high among renters who rarely hear from campaigns. "
             "Thunderstorms favor an indoor town hall."
         ),
         "draft_outreach": (
-            "East Gainesville: rents are up and options are down. Come to a town hall "
+            "Efland: rents are up and options are down. Come to a town hall "
             "on affordable housing and the proposed infill project — your voice "
-            "shapes what gets built. Eastside Community Center, Thursday 6:30pm."
+            "shapes what gets built. Efland-Cheeks Community Center, Thursday 6:30pm."
         ),
     },
     {
-        "venue_suggestion": "Dunnellon Community Park pavilion",
+        "venue_suggestion": "Milton community park pavilion",
         "target_voters": (
-            "Rural voters in western Marion precincts 27, 33, and 41; small-business "
+            "Rural voters in Caswell precincts MILT, LEAS, and STON; small-business "
             "owners dependent on reliable connectivity"
         ),
         "talking_points": [
@@ -204,35 +204,35 @@ _EVENT_BRIEFS: list[dict[str, object]] = [
             "Demand accountability from providers that miss expansion deadlines",
         ],
         "rationale": (
-            "Western Marion voters feel overlooked on infrastructure; an outdoor "
-            "event in Dunnellon signals the campaign shows up beyond Ocala. "
+            "Northern Caswell voters feel overlooked on infrastructure; an outdoor "
+            "event in Milton signals the campaign shows up beyond Yanceyville. "
             "Partly cloudy forecast is workable for a park pavilion format."
         ),
         "draft_outreach": (
-            "Western Marion: tired of spotty internet holding back your farm or "
-            "business? Meet us at Dunnellon Community Park to talk rural broadband "
+            "Northern Caswell: tired of spotty internet holding back your farm or "
+            "business? Meet us at the Milton community park to talk rural broadband "
             "and what the county can do now. Saturday morning, coffee provided."
         ),
     },
     {
-        "venue_suggestion": "RTS Downtown Transfer Station meeting room",
+        "venue_suggestion": "Cedar Grove Community Center meeting room",
         "target_voters": (
-            "Transit-dependent riders in Gainesville precincts 3, 7, and 11; "
-            "UF staff and service workers on proposed cut routes"
+            "Transit-dependent riders in Cedar Grove precincts CG, CX, and OG; "
+            "county staff and service workers on proposed cut routes"
         ),
         "talking_points": [
-            "Oppose route cuts that hit east-side workers hardest",
-            "Fund RTS through fair-share county and city partnerships",
+            "Oppose route cuts that hit crosstown workers hardest",
+            "Fund Orange County transit through fair-share partner contributions",
             "Center rider testimony in any service-reduction decision",
         ],
         "rationale": (
             "Route cuts are imminent and riders are already organizing. An indoor "
-            "forum near the transfer station makes participation easy for the "
+            "forum near downtown stops makes participation easy for the "
             "people most affected."
         ),
         "draft_outreach": (
-            "Gainesville riders: proposed RTS cuts would hit east-side routes first. "
-            "Join a rider forum at the Downtown Transfer Station to share your story "
+            "Cedar Grove riders: proposed transit cuts would hit crosstown routes first. "
+            "Join a rider forum at the Cedar Grove Community Center to share your story "
             "and fight for reliable transit. Wednesday 5:30pm."
         ),
     },
@@ -264,7 +264,7 @@ def mock_event(issue: Issue | None = None, rank: int = 0) -> EventRecommendation
 
 
 def mock_slate(
-    region: str = "Florida HD-21",
+    region: str = "NC HD-50",
     horizon: str = "next two weeks",
 ) -> Slate:
     return Slate(
@@ -295,17 +295,17 @@ def mock_progress_events(run_id: str = "mock-run-001") -> list[ProgressEvent]:
     add(
         "scout",
         "started",
-        "Scanning local news and social signal across Florida HD-21 (Marion + Alachua)",
+        "Scanning local news and social signal across NC HD-50 (Caswell + Orange)",
     )
     add(
         "scout",
         "tool_call",
-        "Fetching RSS feeds for Gainesville Sun, Ocala Star-Banner, and WUFT",
+        "Fetching RSS feeds for Chapelboro, The Caswell Messenger, and The News & Observer",
     )
     add(
         "scout",
         "done",
-        f"Identified {len(issues)} issues across Gainesville, Marion, and Alachua counties",
+        f"Identified {len(issues)} issues across Orange and Caswell counties",
     )
 
     for issue in issues:
@@ -335,7 +335,7 @@ def mock_progress_events(run_id: str = "mock-run-001") -> list[ProgressEvent]:
     add(
         "strategist",
         "done",
-        f"Slate ranked: {len(issues)} events ready for {issues[0].area.split(',')[-1].strip()} and Marion County",
+        f"Slate ranked: {len(issues)} events ready for {issues[0].area.split(',')[-1].strip()} and Caswell County",
     )
 
     return events
