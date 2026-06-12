@@ -77,7 +77,16 @@ class Slate(BaseModel):
     region: str
     horizon: str
     ranked_events: list[EventRecommendation]
+
+class ProgressEvent(BaseModel):      # the agents-working feed — the autonomy beat
+    run_id: str
+    seq: int                         # monotonic, for polling "events since N"
+    agent: str                       # "scout" | "architect:<issue_id>" | "strategist"
+    status: Literal["started", "tool_call", "done", "failed"]
+    detail: str                      # e.g. "pulling Jua weather for north Gainesville"
 ```
+
+**Run contract (why `ProgressEvent` exists):** a slate run takes 30–90s, so `POST /slate` does **not** block until the slate is ready. It returns a `run_id` immediately; the orchestrator emits `ProgressEvent`s as it works; the UI polls for events and then fetches the finished slate. This is what makes the agents-working view (U.4) real instead of scripted — and it keeps the deployed demo from dying on a proxy timeout mid-run.
 
 ---
 
@@ -87,8 +96,8 @@ Do this together at kickoff. Nothing else starts until `schemas/` and `mocks/` a
 
 | ID | Task (file) | Input | Output | Done when |
 |----|-------------|-------|--------|-----------|
-| 0.1 | Define Pydantic schemas (`schemas/models.py`) | the contracts above | `Issue`, `EventRecommendation`, `Slate`, `Weather`, `TurnoutSummary` | imports clean; `python -c "import schemas.models"` works |
-| 0.2 | Mock objects (`mocks/fixtures.py`) | the schemas | `mock_issues()`, `mock_event()`, `mock_slate()` returning valid instances | each returns a schema-valid object |
+| 0.1 | Define Pydantic schemas (`schemas/models.py`) | the contracts above | `Issue`, `EventRecommendation`, `Slate`, `Weather`, `TurnoutSummary`, `ProgressEvent` | imports clean; `python -c "import schemas.models"` works |
+| 0.2 | Mock objects (`mocks/fixtures.py`) | the schemas | `mock_issues()`, `mock_event()`, `mock_slate()`, `mock_progress_events()` returning valid instances | each returns a schema-valid object; progress events tell a believable Scout→Architects→Strategist story for the UI |
 | 0.3 | Sample slate JSON (`mocks/slate.sample.json`) | `mock_slate()` | a realistic 4–5 event ranked slate as JSON | UI can `fetch()` it and render |
 | 0.4 | Repo skeleton + deps (`pyproject.toml`, dir tree, `.env.example`) | layout above | installable repo, env-var template (ANTHROPIC_API_KEY, JUA_API_KEY) | `pip install -e .` succeeds; everyone has the tree |
 
@@ -134,10 +143,10 @@ Ranks events, wires the pipeline, exposes the endpoint the UI calls.
 | ID | Task (file) | Input | Output | Done when |
 |----|-------------|-------|--------|-----------|
 | 4.1 | Ranking (`agents/strategist.py::rank`) | `list[EventRecommendation]` | ranked `Slate` | scores by salience × turnout opportunity × feasibility; returns ordered `Slate` (build on `mock_event()` list) |
-| 4.2 | Orchestrator (`orchestrator.py::run`) | region + horizon | `Slate` | wires Scout → `build_events` → rank; works end-to-end on **mocks** first |
-| 4.3 | API endpoint (`api.py`) | `POST /slate {region, horizon}` | `Slate` JSON | FastAPI serves the orchestrator; returns the sample slate even before reals are wired |
+| 4.2 | Orchestrator (`orchestrator.py::run`) | region + horizon | `Slate` + emits `ProgressEvent`s | wires Scout → `build_events` → rank; emits a `ProgressEvent` at each step (Scout start/done, each Architect start/tool_call/done, Strategist done); works end-to-end on **mocks** first |
+| 4.3 | API endpoints (`api.py`) | `POST /slate {region, horizon}` | `{run_id}`; run starts in background | FastAPI + in-memory run store; `GET /runs/{run_id}` → status + `Slate` when ready; `GET /runs/{run_id}/events?since=N` → `ProgressEvent`s for polling; CORS enabled; serves mock events + sample slate even before reals are wired |
 | 4.4 | Determinism/cache layer (`orchestrator.py`) | — | cached Scout + tool outputs | a second identical run returns instantly; demo reproducible |
-| 4.5 | Guild.ai wrap (integration) (`orchestrator.py`) | the working agents | agents registered/orchestrated under Guild.ai | demo shows Guild orchestrating; **only after 4.2 works standalone** |
+| 4.5 | Guild.ai wrap (integration) (`orchestrator.py`) | the working agents | agents registered/orchestrated under Guild.ai | demo shows Guild orchestrating; **only after 4.2 works standalone**; progress events keep flowing under Guild |
 
 ## WS-UI — Frontend  ·  owner: ____ (the UI teammate)  ·  Depends on: WS-0 fixture + REST contract ONLY  ·  Never blocks on backend
 
@@ -148,8 +157,8 @@ Owns `ui/` entirely. Builds against `mocks/slate.sample.json` and the `POST /sla
 | U.1 | Project scaffold (`ui/`) | OpenUI starter | running dev server | renders a hello page locally |
 | U.2 | Slate board (`ui/`) | `slate.sample.json` | ranked grid of event cards | cards show issue, area, date, weather, format from the fixture |
 | U.3 | Event detail view (`ui/`) | one `EventRecommendation` | full briefing panel | click a card → talking points, target voters, venue, draft outreach |
-| U.4 | "Agents working" view (`ui/`) | mock progress events | live coordination display | shows Scout→Architects→Strategist progress (mocked first); **the autonomy beat** |
-| U.5 | Input + wire to API (`ui/`) | region + horizon form | calls `POST /slate`, renders result | with backend up, a real run renders end-to-end |
+| U.4 | "Agents working" view (`ui/`) | `mock_progress_events()` fixture | live coordination display | shows Scout→Architects→Strategist progress from `ProgressEvent`s (fixture first, polls `GET /runs/{id}/events` at integration); **the autonomy beat** |
+| U.5 | Input + wire to API (`ui/`) | region + horizon form | calls `POST /slate` → run_id, polls events + result | with backend up, a real run shows live agent progress then renders the slate end-to-end |
 | U.6 | Demo polish (`ui/`) | the above | clean, legible slate | looks good on the projector; readable from the back of the room |
 
 ## WS-DEPLOY — Infra  ·  owner: ____ (can be WS-4 owner)  ·  Depends on: an endpoint exists
