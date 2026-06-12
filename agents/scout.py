@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import logging
+import os
 import re
 from pathlib import Path
 
@@ -15,7 +16,6 @@ from schemas.models import Issue
 CLUSTER_MODEL = "claude-sonnet-4-6"
 
 log = logging.getLogger("scout")
-_CACHE_DIR = Path(__file__).resolve().parent.parent / ".cache" / "scout"
 _MEM_CACHE: dict[str, list[Issue]] = {}
 _discover_calls = 0
 
@@ -43,6 +43,15 @@ class _ClusterResult(BaseModel):
     issues: list[_DraftIssue]
 
 
+def _cache_dir() -> Path:
+    override = os.environ.get("CAMPAIGN_COPILOT_SCOUT_CACHE")
+    if override:
+        return Path(override)
+    xdg_cache = os.environ.get("XDG_CACHE_HOME")
+    base = Path(xdg_cache) if xdg_cache else Path.home() / ".cache"
+    return base / "campaign-copilot" / "scout"
+
+
 def _normalize_region(region: str) -> str:
     return re.sub(r"\s+", " ", region.strip().lower())
 
@@ -52,7 +61,7 @@ def _cache_key(region: str) -> str:
 
 
 def _read_disk(key: str, norm_region: str) -> list[Issue] | None:
-    path = _CACHE_DIR / f"{key}.json"
+    path = _cache_dir() / f"{key}.json"
     if not path.is_file():
         return None
     try:
@@ -63,19 +72,23 @@ def _read_disk(key: str, norm_region: str) -> list[Issue] | None:
         if not isinstance(stored, str) or _normalize_region(stored) != norm_region:
             return None
         return [Issue.model_validate(d) for d in payload["issues"]]
-    except (json.JSONDecodeError, KeyError, TypeError, ValueError):
+    except (OSError, json.JSONDecodeError, KeyError, TypeError, ValueError):
         log.debug("scout disk cache corrupt or invalid key=%s", key)
         return None
 
 
 def _write_disk(key: str, norm_region: str, issues: list[Issue]) -> None:
-    _CACHE_DIR.mkdir(parents=True, exist_ok=True)
-    payload = {
-        "region": norm_region,
-        "issues": [i.model_dump(mode="json") for i in issues],
-    }
-    path = _CACHE_DIR / f"{key}.json"
-    path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    try:
+        cache_dir = _cache_dir()
+        cache_dir.mkdir(parents=True, exist_ok=True)
+        payload = {
+            "region": norm_region,
+            "issues": [i.model_dump(mode="json") for i in issues],
+        }
+        path = cache_dir / f"{key}.json"
+        path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    except OSError:
+        log.debug("scout disk cache write failed key=%s", key, exc_info=True)
 
 
 def _slug(text: str) -> str:
