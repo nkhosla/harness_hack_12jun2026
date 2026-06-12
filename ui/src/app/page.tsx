@@ -69,7 +69,7 @@ export default function Home() {
           </div>
 
           <div ref={arm1RightRef} className="opacity-0 flex-1 flex flex-col items-center gap-4">
-            <CTAButton label="Create slate →" size="lg" />
+            <CTAButton label="Create slate" size="lg" />
           </div>
 
         </div>
@@ -131,8 +131,7 @@ export default function Home() {
           </div>
 
           <div ref={arm2RightRef} className="opacity-0 flex-1 flex flex-col items-center gap-4 md:self-center">
-            <CTAButton label="Create slate →" size="lg" />
-            <p className="text-xs text-ink-muted select-none">Demo mode. No account needed.</p>
+            <CTAButton label="Create slate" size="lg" />
           </div>
 
         </div>

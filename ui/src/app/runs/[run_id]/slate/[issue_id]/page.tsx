@@ -15,9 +15,12 @@ function voterPriorityLabel(salience: number): string {
   return "Emerging issue in this area";
 }
 
-const FORMAT_ICON: Record<string, string> = {
-  indoor: "⬜",
-  outdoor: "🌿",
+const WEATHER_ICON: Record<string, string> = {
+  clear: "☀️",
+  partly_cloudy: "⛅",
+  rain: "🌧️",
+  thunderstorms: "⛈️",
+  hot_humid: "🌡️",
 };
 
 function formatDate(iso: string): string {
@@ -140,7 +143,7 @@ export default function IssueDetailPage() {
                 </p>
                 <div className="text-sm text-ink space-y-0.5">
                   <p>
-                    {FORMAT_ICON[event.format]}{" "}
+                    {WEATHER_ICON[event.weather.condition] ?? "🌤️"}{" "}
                     {event.weather.condition.replace(/_/g, " ")} ·{" "}
                     {Math.round(event.weather.temp_f)}°F
                   </p>

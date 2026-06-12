@@ -16,9 +16,9 @@ export default function RootLayout({
       <body className="bg-canvas text-ink min-h-screen flex flex-col">
 
         {/* Full-bleed header */}
-        <header className="w-full sticky top-0 z-50 bg-canvas/95 backdrop-blur-sm border-b border-border">
-          <div className="max-w-page mx-auto px-8 h-14 flex items-center">
-            <span className="text-sm font-bold tracking-[0.12em] uppercase text-accent select-none">
+        <header className="w-full sticky top-0 z-50 bg-ink">
+          <div className="max-w-page mx-auto px-6 h-14 flex items-center">
+            <span className="text-sm font-bold tracking-[0.12em] uppercase text-white select-none">
               Cicero
             </span>
           </div>
