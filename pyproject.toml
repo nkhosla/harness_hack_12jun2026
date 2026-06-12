@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "campaign-copilot"
+version = "0.1.0"
+description = "Campaign copilot hackathon project"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "pydantic>=2",
+    "fastapi",
+    "uvicorn[standard]",
+    "httpx",
+    "python-dotenv",
+    "anthropic",
+    "pandas",
+    "duckdb",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-asyncio",
+    "ruff",
+]
+
+[tool.setuptools]
+py-modules = ["api", "orchestrator"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["schemas*", "mocks*", "agents*", "tools*"]
