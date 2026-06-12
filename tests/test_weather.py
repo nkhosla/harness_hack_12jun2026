@@ -38,7 +38,7 @@ def _transport(periods: list[dict], calls: list[str]) -> httpx.MockTransport:
 def _get(periods, tmp_path, calls, target=TARGET):
     return asyncio.run(
         get_weather(
-            "Ocala, Marion County",
+            "Yanceyville, Caswell County",
             target,
             transport=_transport(periods, calls),
             cache_dir=tmp_path,
@@ -134,7 +134,7 @@ def test_retries_once_on_transient_server_error(tmp_path):
     calls: list[str] = []
     transport = _flaky_transport(_periods("2026-06-15", [78, 85], pop=20), 1, calls)
     w = asyncio.run(
-        get_weather("Ocala, Marion County", TARGET, transport=transport, cache_dir=tmp_path)
+        get_weather("Yanceyville, Caswell County", TARGET, transport=transport, cache_dir=tmp_path)
     )
     assert w.temp_f == 85.0
 
@@ -146,7 +146,7 @@ def test_raises_when_both_attempts_fail(tmp_path):
     transport = _flaky_transport([], 99, calls)
     with pytest.raises(httpx.HTTPError):
         asyncio.run(
-            get_weather("Ocala, Marion County", TARGET, transport=transport, cache_dir=tmp_path)
+            get_weather("Yanceyville, Caswell County", TARGET, transport=transport, cache_dir=tmp_path)
         )
 
 
@@ -162,7 +162,7 @@ def test_does_not_retry_client_error(tmp_path):
     with pytest.raises(httpx.HTTPStatusError):
         asyncio.run(
             get_weather(
-                "Ocala, Marion County",
+                "Yanceyville, Caswell County",
                 TARGET,
                 transport=httpx.MockTransport(handler),
                 cache_dir=tmp_path,

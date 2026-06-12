@@ -139,18 +139,18 @@ if __name__ == "__main__":
     async def main() -> None:
         target = date.today() + timedelta(days=2)
         for area in [
-            "north Gainesville, Alachua County",
-            "east Gainesville, Alachua County",
-            "Gainesville, Alachua County",
-            "Ocala, Marion County",
-            "western Marion County",
+            "Carrboro, Orange County",
+            "Northside, Chapel Hill, Orange County",
+            "Chapel Hill, Orange County",
+            "Yanceyville, Caswell County",
+            "northern Caswell County",
         ]:
             t0 = time.perf_counter()
             w = await get_weather(area, target)
             print(f"{area} @ {target}: {w.summary} -> {w.recommended_format} "
                   f"({time.perf_counter() - t0:.2f}s)")
         t0 = time.perf_counter()
-        await get_weather("Ocala, Marion County", target)
+        await get_weather("Yanceyville, Caswell County", target)
         print(f"cache hit: {time.perf_counter() - t0:.3f}s")
 
     asyncio.run(main())

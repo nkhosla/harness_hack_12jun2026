@@ -334,7 +334,7 @@ async def run(
 
 
 async def _smoke_test() -> None:
-    region = os.environ.get("CAMPAIGN_REGION", "Florida HD-21")
+    region = os.environ.get("CAMPAIGN_REGION", "NC HD-50")
     horizon = os.environ.get("CAMPAIGN_HORIZON", "next two weeks")
 
     start = time.perf_counter()
