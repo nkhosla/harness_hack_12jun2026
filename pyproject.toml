@@ -20,6 +20,9 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+guild = [
+    "httpx",
+]
 dev = [
     "pytest",
     "pytest-asyncio",
@@ -31,4 +34,7 @@ py-modules = ["api", "orchestrator"]
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["schemas*", "mocks*", "agents*", "tools*"]
+include = ["schemas*", "mocks*", "agents*", "tools*", "guild_adapter*"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
