@@ -83,7 +83,7 @@ class ProgressEvent(BaseModel):      # the agents-working feed — the autonomy 
     seq: int                         # monotonic, for polling "events since N"
     agent: str                       # "scout" | "architect:<issue_id>" | "strategist"
     status: Literal["started", "tool_call", "done", "failed"]
-    detail: str                      # e.g. "pulling Jua weather for north Gainesville"
+    detail: str                      # e.g. "pulling Jua weather for Carrboro"
 ```
 
 **Run contract (why `ProgressEvent` exists):** a slate run takes 30–90s, so `POST /slate` does **not** block until the slate is ready. It returns a `run_id` immediately; the orchestrator emits `ProgressEvent`s as it works; the UI polls for events and then fetches the finished slate. This is what makes the agents-working view (U.4) real instead of scripted — and it keeps the deployed demo from dying on a proxy timeout mid-run.
