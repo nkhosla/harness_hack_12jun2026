@@ -3,28 +3,69 @@
 import * as React from "react";
 import Link from "next/link";
 import { useRouter, useParams } from "next/navigation";
-import { Renderer } from "@openuidev/react-lang";
-import { streamRunUI } from "@/lib/api";
-import { progressLibrary } from "@/lib/openui-library";
+import { getRunStatus, getRunEvents } from "@/lib/api";
+import type { ProgressEvent } from "@/lib/types";
+
+const POLL_MS = 2000;
+
+const STATUS_ICON: Record<ProgressEvent["status"], string> = {
+  started: "○",
+  tool_call: "→",
+  done: "●",
+  failed: "✕",
+};
+
+function agentLabel(agent: string): string {
+  if (agent.startsWith("architect:")) return "Event Architect";
+  if (agent === "scout") return "Scout";
+  if (agent === "strategist") return "Strategist";
+  return agent;
+}
 
 export default function RunPage() {
   const router = useRouter();
   const { run_id } = useParams<{ run_id: string }>();
 
-  const [response, setResponse] = React.useState<string | null>(null);
+  const [events, setEvents] = React.useState<ProgressEvent[]>([]);
   const [phase, setPhase] = React.useState<"running" | "done" | "failed">("running");
 
   React.useEffect(() => {
-    const abort = new AbortController();
+    let cancelled = false;
+    let lastSeq = -1;
 
-    streamRunUI(run_id, setResponse, abort.signal)
-      .then(() => setPhase("done"))
-      .catch((err) => {
-        if (err instanceof DOMException && err.name === "AbortError") return;
+    async function poll() {
+      try {
+        const [status, newEvents] = await Promise.all([
+          getRunStatus(run_id),
+          getRunEvents(run_id, lastSeq),
+        ]);
+        if (cancelled) return;
+
+        if (newEvents.length > 0) {
+          lastSeq = newEvents[newEvents.length - 1].seq;
+          setEvents((prev) => [...prev, ...newEvents]);
+        }
+
+        if (status.status === "done") {
+          setPhase("done");
+          return;
+        }
+        if (status.status === "failed") {
+          setPhase("failed");
+          return;
+        }
+      } catch {
+        if (cancelled) return;
         setPhase("failed");
-      });
+        return;
+      }
+      setTimeout(poll, POLL_MS);
+    }
 
-    return () => abort.abort();
+    poll();
+    return () => {
+      cancelled = true;
+    };
   }, [run_id]);
 
   React.useEffect(() => {
@@ -60,15 +101,24 @@ export default function RunPage() {
           </p>
         </div>
 
-        {/* Agent-generated UI, streamed as OpenUI Lang and rendered progressively */}
-        {response && (
-          <div className="mb-12">
-            <Renderer
-              response={response}
-              library={progressLibrary}
-              isStreaming={phase === "running"}
-            />
-          </div>
+        {/* Live agent progress timeline */}
+        {events.length > 0 && (
+          <ol className="mb-12 space-y-3">
+            {events.map((e) => (
+              <li key={e.seq} className="flex items-baseline gap-3 text-sm">
+                <span
+                  className={e.status === "failed" ? "text-danger" : "text-accent"}
+                  aria-hidden="true"
+                >
+                  {STATUS_ICON[e.status]}
+                </span>
+                <span className="font-medium text-ink shrink-0">
+                  {agentLabel(e.agent)}
+                </span>
+                <span className="text-ink-muted">{e.detail}</span>
+              </li>
+            ))}
+          </ol>
         )}
 
         {/* Failure state */}

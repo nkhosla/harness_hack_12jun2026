@@ -51,7 +51,7 @@ def _select_runner() -> Callable[..., Awaitable[Slate]]:
     if os.getenv("CAMPAIGN_USE_MOCK", "1") != "0":
         return mock_run
 
-    from orchestrator import run
+    from pipeline import run
 
     return run
 
