@@ -3,12 +3,95 @@ from __future__ import annotations
 import asyncio
 import logging
 from collections.abc import Awaitable, Callable
+from typing import Literal
 
-from schemas.models import EventRecommendation, Issue
+from anthropic import AsyncAnthropic
+from dotenv import load_dotenv
+from pydantic import BaseModel, ConfigDict
+
+from schemas.models import EventRecommendation, Issue, TurnoutSummary, Weather
+
+load_dotenv()
 
 logger = logging.getLogger(__name__)
 
 DEFAULT_EVENT_TIMEOUT_S = 45.0  # one shot per event; no retry
+
+SYSTEM_PROMPT = """\
+You are an experienced campaign field and events organizer for local and state races.
+
+Your job is to turn one local issue plus its weather forecast and voter-turnout picture \
+into one concrete, credible campaign event proposal. Be specific to the geography and \
+issue — generic advice is not useful.
+
+Respond strictly through the provided structured output schema. Every field must be \
+grounded in the inputs you receive."""
+
+
+class EventIdeation(BaseModel):
+    """The Claude-generated portion of an EventRecommendation (task 3.1 output).
+
+    3.2 build_event merges this with issue/area/weather/proposed_date.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    format: Literal["indoor", "outdoor"]
+    venue_suggestion: str
+    target_voters: str
+    talking_points: list[str]
+    rationale: str
+
+
+def _build_user_message(
+    issue: Issue,
+    weather: Weather,
+    turnout: TurnoutSummary,
+) -> str:
+    required_format = weather.recommended_format
+    return f"""\
+Design one campaign event for the issue, weather, and turnout data below.
+
+## Issue
+{issue.model_dump_json(indent=2)}
+
+## Weather
+{weather.model_dump_json(indent=2)}
+
+## Turnout
+{turnout.model_dump_json(indent=2)}
+
+## Field instructions
+
+- format: MUST be exactly "{required_format}" (matches weather.recommended_format).
+- venue_suggestion: Name a specific, plausible venue in {issue.area} suited to a \
+{required_format} event (indoor → community center, library, or school cafeteria; \
+outdoor → park, plaza, or fairground).
+- target_voters: Describe who to mobilize, grounded in turnout.soft_precincts and \
+turnout.target_segments.
+- talking_points: Provide 3–5 concrete, issue-specific points drawn from issue.summary.
+- rationale: Write 1–2 sentences tying issue.salience, turnout opportunity, and weather \
+feasibility together."""
+
+
+async def ideate(
+    issue: Issue,
+    weather: Weather,
+    turnout: TurnoutSummary,
+    *,
+    client: AsyncAnthropic | None = None,
+) -> EventIdeation:
+    """Generate the Claude-authored portion of an EventRecommendation."""
+    client = client or AsyncAnthropic()
+    resp = await client.with_options(timeout=30).messages.parse(
+        model="claude-opus-4-8",
+        max_tokens=2000,
+        output_config={"effort": "medium"},
+        system=SYSTEM_PROMPT,
+        messages=[{"role": "user", "content": _build_user_message(issue, weather, turnout)}],
+        output_format=EventIdeation,
+    )
+    return resp.parsed_output
 
 
 async def build_events(
@@ -51,6 +134,7 @@ async def build_events(
 
 if __name__ == "__main__":
     import sys
+
     from mocks.fixtures import mock_event, mock_issues
 
     async def _smoke() -> None:
@@ -66,9 +150,9 @@ if __name__ == "__main__":
         async def flaky_builder(issue: Issue) -> EventRecommendation:
             idx = next(n for n, i in enumerate(issues) if i.id == issue.id)
             if idx == 1:
-                raise RuntimeError("boom")          # dropped: exception
+                raise RuntimeError("boom")  # dropped: exception
             if idx == 2:
-                await asyncio.sleep(10)             # dropped: exceeds tiny timeout
+                await asyncio.sleep(10)  # dropped: exceeds tiny timeout
             return mock_event(issue=issue)
 
         mixed = await build_events(issues, builder=flaky_builder, timeout_s=0.05)
