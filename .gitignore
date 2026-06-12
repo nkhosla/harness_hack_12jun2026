@@ -2,6 +2,7 @@
 __pycache__/
 *.py[cod]
 .env
+.cache/
 build/
 dist/
 data/cache/

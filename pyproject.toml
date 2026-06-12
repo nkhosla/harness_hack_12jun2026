@@ -28,11 +28,14 @@ dev = [
 ]
 
 [tool.setuptools]
-py-modules = ["api", "orchestrator"]
+py-modules = ["api", "orchestrator", "runstore"]
 
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["schemas*", "mocks*", "agents*", "tools*"]
 
+[tool.pytest.ini_options]
+pythonpath = ["."]
+
 [tool.setuptools.package-data]
-tools = ["resources/*.json"]
+tools = ["data/*.json", "resources/*.json"]
