@@ -15,6 +15,7 @@ load_dotenv()
 
 logger = logging.getLogger(__name__)
 
+MODEL = "claude-opus-4-8"
 DEFAULT_EVENT_TIMEOUT_S = 45.0  # one shot per event; no retry
 
 SYSTEM_PROMPT = """\
@@ -26,6 +27,16 @@ issue — generic advice is not useful.
 
 Respond strictly through the provided structured output schema. Every field must be \
 grounded in the inputs you receive."""
+
+DRAFT_SYSTEM_PROMPT = (
+    "You are a campaign field organizer. Given the details of a planned "
+    "community event, write one short, ready-to-send outreach message (a "
+    "social post or email body) that a volunteer could send in thirty "
+    "seconds. Address the target audience directly, name the issue, include "
+    "the venue and date when given, and end with a clear call to action. "
+    "Keep it under 80 words. Return ONLY the message text - no preamble, no "
+    "subject line, no surrounding quotation marks."
+)
 
 
 class EventIdeation(BaseModel):
@@ -74,6 +85,20 @@ turnout.target_segments.
 feasibility together."""
 
 
+def _draft_prompt(event: EventRecommendation) -> str:
+    points = "\n".join(f"- {p}" for p in event.talking_points)
+    return (
+        f"Issue: {event.issue.title}\n"
+        f"Summary: {event.issue.summary}\n"
+        f"Area: {event.area}\n"
+        f"Date: {event.proposed_date.strftime('%A, %B %d')}\n"
+        f"Format: {event.format}\n"
+        f"Venue: {event.venue_suggestion}\n"
+        f"Target voters: {event.target_voters}\n"
+        f"Talking points:\n{points}"
+    )
+
+
 async def ideate(
     issue: Issue,
     weather: Weather,
@@ -84,7 +109,7 @@ async def ideate(
     """Generate the Claude-authored portion of an EventRecommendation."""
     client = client or AsyncAnthropic()
     resp = await client.with_options(timeout=30).messages.parse(
-        model="claude-opus-4-8",
+        model=MODEL,
         max_tokens=2000,
         output_config={"effort": "medium"},
         system=SYSTEM_PROMPT,
@@ -92,6 +117,22 @@ async def ideate(
         output_format=EventIdeation,
     )
     return resp.parsed_output
+
+
+async def draft(
+    event: EventRecommendation,
+    client: AsyncAnthropic | None = None,
+) -> EventRecommendation:
+    """Generate sendable outreach copy and return a copy with draft_outreach filled."""
+    client = client or AsyncAnthropic()
+    response = await client.messages.create(
+        model=MODEL,
+        max_tokens=1024,
+        system=DRAFT_SYSTEM_PROMPT,
+        messages=[{"role": "user", "content": _draft_prompt(event)}],
+    )
+    text = next((b.text for b in response.content if b.type == "text"), "").strip()
+    return event.model_copy(update={"draft_outreach": text})
 
 
 async def build_events(
