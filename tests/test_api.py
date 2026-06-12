@@ -28,7 +28,7 @@ async def _wait_for_done(client: httpx.AsyncClient, run_id: str) -> dict:
 async def test_create_slate_returns_run_id(client: httpx.AsyncClient) -> None:
     response = await client.post(
         "/slate",
-        json={"region": "Florida HD-21", "horizon": "next two weeks"},
+        json={"region": "NC HD-50", "horizon": "next two weeks"},
     )
     assert response.status_code == 202
     body = response.json()
@@ -40,7 +40,7 @@ async def test_create_slate_returns_run_id(client: httpx.AsyncClient) -> None:
 async def test_run_completes_with_slate(client: httpx.AsyncClient) -> None:
     response = await client.post(
         "/slate",
-        json={"region": "Florida HD-21", "horizon": "next two weeks"},
+        json={"region": "NC HD-50", "horizon": "next two weeks"},
     )
     run_id = response.json()["run_id"]
 
@@ -49,7 +49,7 @@ async def test_run_completes_with_slate(client: httpx.AsyncClient) -> None:
     assert body["error"] is None
 
     slate = Slate.model_validate(body["slate"])
-    assert slate.region == "Florida HD-21"
+    assert slate.region == "NC HD-50"
     assert slate.horizon == "next two weeks"
     assert len(slate.ranked_events) == 5
 
@@ -58,7 +58,7 @@ async def test_run_completes_with_slate(client: httpx.AsyncClient) -> None:
 async def test_events_sequencing_and_since_cursor(client: httpx.AsyncClient) -> None:
     response = await client.post(
         "/slate",
-        json={"region": "Florida HD-21", "horizon": "next two weeks"},
+        json={"region": "NC HD-50", "horizon": "next two weeks"},
     )
     run_id = response.json()["run_id"]
 
@@ -100,7 +100,7 @@ async def test_runner_selection_failure_marks_run_failed(
 
     response = await client.post(
         "/slate",
-        json={"region": "Florida HD-21", "horizon": "next two weeks"},
+        json={"region": "NC HD-50", "horizon": "next two weeks"},
     )
     run_id = response.json()["run_id"]
 

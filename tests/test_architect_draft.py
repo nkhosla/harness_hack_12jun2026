@@ -34,7 +34,7 @@ class _FakeClient:
 
 @pytest.mark.asyncio
 async def test_draft_fills_draft_outreach():
-    sample = "North Gainesville neighbors: join us Saturday at the Boltin Center. RSVP in bio."
+    sample = "Hillsborough neighbors: join us Saturday at the Boltin Center. RSVP in bio."
     event = mock_event().model_copy(update={"draft_outreach": None})
     fake = _FakeClient(sample)
 

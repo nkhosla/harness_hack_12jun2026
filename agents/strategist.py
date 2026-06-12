@@ -4,7 +4,7 @@ from schemas.models import EventRecommendation, Slate, TurnoutSummary
 
 # Tunables — kept as module constants so they're easy to find/adjust during the demo.
 INDOOR_FEASIBILITY = 0.9  # indoor events are weather-proof; the architect already adapted to weather
-DEFAULT_REGION = "Florida HD-21"
+DEFAULT_REGION = "NC HD-50"
 DEFAULT_HORIZON = "next two weeks"
 
 

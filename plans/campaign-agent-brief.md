@@ -30,7 +30,7 @@ The flow:
 3. The **Slate Strategist** ranks the events into the campaign's next moves (issue salience × turnout opportunity × feasibility).
 4. The slate is presented: "here are your next 5 moves," each a card you can act on.
 
-This is the differentiator: not one briefing for one event, but a proactive, prioritized set of recommended events — the engine for community outreach and relationship-building. Sentiment isn't a readout; it's the **generative seed**. A water-quality concern in north Gainesville and a school-funding fight in Marion County aren't two facts on a dashboard — they're two different events, in two different places, with two different forecasts and two different audiences, each handled by its own Event Architect.
+This is the differentiator: not one briefing for one event, but a proactive, prioritized set of recommended events — the engine for community outreach and relationship-building. Sentiment isn't a readout; it's the **generative seed**. A water-quality concern in Hillsborough and a school-funding fight in Caswell County aren't two facts on a dashboard — they're two different events, in two different places, with two different forecasts and two different audiences, each handled by its own Event Architect.
 
 ### The shared schemas (the contracts the agents pass between them)
 
@@ -90,7 +90,7 @@ The honest tradeoff: this costs a few extra LLM calls and some latency versus a 
 
 ## Autonomy is 20% of the score — and the multi-agent flow is built for it
 
-The rubric weights **Autonomy** at 20%: "How well does the agent act on real-time data without manual intervention?" After a single region input, the agents independently scan signal, detect issues, spin up an Architect per issue, pull live weather per location, query turnout per area, and rank the slate — no human stitching steps together. Make it *visible*: show the agents coordinating (Scout found 5 issues → Architect 1 pulling weather for north Gainesville → Architect 3 querying Marion turnout → Strategist ranking), then the finished slate. This is the beat that wins this rubric.
+The rubric weights **Autonomy** at 20%: "How well does the agent act on real-time data without manual intervention?" After a single region input, the agents independently scan signal, detect issues, spin up an Architect per issue, pull live weather per location, query turnout per area, and rank the slate — no human stitching steps together. Make it *visible*: show the agents coordinating (Scout found 5 issues → Architect 1 pulling weather for Hillsborough → Architect 3 querying Caswell turnout → Strategist ranking), then the finished slate. This is the beat that wins this rubric.
 
 ## Data sources + realism notes
 
@@ -161,14 +161,14 @@ Realistic target: deep on 5 core sponsors → competitive for the general prize 
 
 ## Demo case — use a real region
 
-Use a region you actually have data for. **Florida HD-21 (Marion + Alachua counties, Gainesville)** is the obvious choice — real voter file via VAN, a real race, multiple distinct areas (so the per-event weather/precinct variation is real, not contrived), and an authentic story judges can't fake-detect. Aggregate the voter data to precinct level for anything shown on screen.
+Use a region you actually have data for. **NC HD-50 (Caswell + Orange counties, Cedar Grove/Hillsborough)** is the pick — official precinct-level turnout from the NC State Board of Elections (already in `data/turnout/`), multiple distinct areas (small-town Orange County + rural Caswell County, so the per-event weather/precinct variation is real, not contrived), and no connection to anyone's actual campaign work. All data is aggregate public election results — no voter file, no PII.
 
 ## The 3-minute demo script
 
 1. **(0:00) The problem, in one breath.** "Local campaigns can't afford a field director. This proactively does that job for the cost of API calls."
-2. **(0:20) One input.** Enter the region (Marion + Alachua) and a two-week horizon. Then step back — *you don't tell it what events to run.*
+2. **(0:20) One input.** Enter the region (Caswell + Orange) and a two-week horizon. Then step back — *you don't tell it what events to run.*
 3. **(0:35) Watch the agents work.** Coordination scrolls: Scout finds the issues by area → an Architect spins up per issue, each pulling its own Jua weather and turnout → Strategist ranks. *This is the autonomy beat.*
-4. **(1:20) The slate lands.** A ranked board of proposed events. Read two off it: "north Gainesville, water quality, rain forecast → indoor listening session at [venue], target these soft precincts. Marion County, school funding, clear skies → outdoor rally at [park], target these voters." Same system, different place, different weather, different audience.
+4. **(1:20) The slate lands.** A ranked board of proposed events. Read two off it: "Hillsborough, water quality, rain forecast → indoor listening session at [venue], target these soft precincts. Caswell County, school funding, clear skies → outdoor rally at [park], target these voters." Same system, different place, different weather, different audience.
 5. **(2:10) Click into one.** The full briefing — talking points, target segment, and the draft outreach it wrote. "A volunteer could send this in thirty seconds."
 6. **(2:40) Roadmap in one line.** "These are next week's moves, ranked. The same agents will power fundraising, stakeholder mapping, and social — this is the first system."
 

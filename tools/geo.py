@@ -1,36 +1,37 @@
 """WS-2.3 — Area -> lat/long resolver (static lookup, never raises).
 
-Maps the demo region's area names (Florida HD-21: Alachua + Marion counties)
+Maps the demo region's area names (NC HD-50: Caswell + Orange counties)
 to coordinates for the weather client. Unknown areas fall back to keyword
 matching, then to the district center, so every Scout-emitted area resolves.
 """
 from __future__ import annotations
 
-GAINESVILLE = (29.6516, -82.3248)
-NORTH_GAINESVILLE = (29.7016, -82.3320)
-EAST_GAINESVILLE = (29.6520, -82.2920)
-OCALA = (29.1872, -82.1401)
-WESTERN_MARION = (29.0492, -82.4609)  # Dunnellon
-DISTRICT_CENTER = (29.4200, -82.2300)  # midpoint of the HD-21 demo district
+HILLSBOROUGH = (36.0754, -79.0997)
+EFLAND = (36.0810, -79.1692)
+CEDAR_GROVE = (36.1743, -79.1670)
+YANCEYVILLE = (36.4040, -79.3361)
+MILTON = (36.5382, -79.2086)
+DISTRICT_CENTER = (36.1500, -79.1900)  # midpoint of the HD-50 demo region
 
 _EXACT: dict[str, tuple[float, float]] = {
-    "gainesville, alachua county": GAINESVILLE,
-    "north gainesville, alachua county": NORTH_GAINESVILLE,
-    "east gainesville, alachua county": EAST_GAINESVILLE,
-    "ocala, marion county": OCALA,
-    "western marion county": WESTERN_MARION,
+    "hillsborough, orange county": HILLSBOROUGH,
+    "efland, orange county": EFLAND,
+    "cedar grove, orange county": CEDAR_GROVE,
+    "yanceyville, caswell county": YANCEYVILLE,
+    "milton, caswell county": MILTON,
+    "northern caswell county": MILTON,
 }
 
 # Checked in order: most specific keyword combos first.
 _KEYWORDS: list[tuple[tuple[str, ...], tuple[float, float]]] = [
-    (("north", "gainesville"), NORTH_GAINESVILLE),
-    (("east", "gainesville"), EAST_GAINESVILLE),
-    (("western", "marion"), WESTERN_MARION),
-    (("gainesville",), GAINESVILLE),
-    (("alachua",), GAINESVILLE),
-    (("ocala",), OCALA),
-    (("marion",), OCALA),
-    (("dunnellon",), WESTERN_MARION),
+    (("hillsborough",), HILLSBOROUGH),
+    (("efland",), EFLAND),
+    (("cedar", "grove"), CEDAR_GROVE),
+    (("yanceyville",), YANCEYVILLE),
+    (("northern", "caswell"), MILTON),
+    (("milton",), MILTON),
+    (("caswell",), YANCEYVILLE),
+    (("orange",), HILLSBOROUGH),
 ]
 
 

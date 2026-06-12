@@ -234,14 +234,14 @@ def run(region: str, *, refresh: bool = False) -> list[Issue]:
 
 _SAMPLE_DOCS: list[SourceDoc] = [
     SourceDoc(
-        title="Residents report discoloration in Alachua Creek after storms",
+        title="Residents report discoloration in Eno River after storms",
         text=(
-            "North Gainesville homeowners say creek water turned brown and smelled "
-            "like sewage following heavy rain last week. City public works promised "
+            "Hillsborough homeowners say creek water turned brown and smelled "
+            "like sewage following heavy rain last week. Town public works promised "
             "testing results by Friday; neighborhood associations are planning a "
             "community meeting."
         ),
-        url="https://www.gainesville.com/story/news/local/2026/06/alachua-creek-water-quality",
+        url="https://chapelboro.com/news/2026/06/eno-river-water-quality",
         kind="news",
     ),
     SourceDoc(
@@ -251,38 +251,38 @@ _SAMPLE_DOCS: list[SourceDoc] = [
             "Called 311 twice. Who's going to the city council briefing Thursday? "
             "We need answers before kids play outside again."
         ),
-        url="https://www.wuft.org/news/2026/06/12/north-gainesville-water-concerns",
+        url="https://www.indyweek.com/news/orange/2026/06/hillsborough-creek-concerns",
         kind="social",
     ),
     SourceDoc(
-        title="Marion County School Board faces fall budget gap",
+        title="Caswell County School Board faces fall budget gap",
         text=(
             "Superintendent warns of a multi-million-dollar shortfall with proposed "
             "cuts to arts and after-school programs. Parent groups and the teachers' "
-            "association are organizing ahead of the July budget vote in Ocala."
+            "association are organizing ahead of the July budget vote in Yanceyville."
         ),
-        url="https://www.ocala.com/story/news/education/2026/06/marion-school-budget-gap",
+        url="https://www.caswellmessenger.com/news/2026/06/school-budget-gap",
         kind="news",
     ),
     SourceDoc(
-        title="East Gainesville rents keep climbing - where do longtime residents go?",
+        title="Efland rents keep climbing - where do longtime residents go?",
         text=(
-            "Another east-side landlord raised rents 18%. The proposed infill project "
-            "on Waldo Road is splitting neighbors: some want new units, others fear "
+            "Another Efland landlord raised rents 18%. The proposed infill project "
+            "near downtown is splitting neighbors: some want new units, others fear "
             "displacement of families who've lived here for decades."
         ),
-        url="https://www.gainesville.com/story/news/local/2026/06/east-gainesville-housing",
+        url="https://chapelboro.com/news/2026/06/efland-housing-pressure",
         kind="social",
     ),
     SourceDoc(
-        title="RTS proposes cutting two east-side bus routes",
+        title="Orange County transit proposes cutting two crosstown bus routes",
         text=(
-            "Gainesville Regional Transit System unveiled a budget plan that would "
+            "Orange County transit unveiled a budget plan that would "
             "eliminate routes 25 and 34, citing a funding shortfall. Riders and "
-            "transit advocates say the cuts would hit working families and UF staff "
+            "transit advocates say the cuts would hit working families and county staff "
             "hardest."
         ),
-        url="https://www.gainesville.com/story/news/local/2026/06/rts-route-cuts",
+        url="https://chapelboro.com/news/2026/06/orange-county-transit-cuts",
         kind="news",
     ),
 ]
@@ -290,7 +290,7 @@ _SAMPLE_DOCS: list[SourceDoc] = [
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
-    region = "Florida HD-21"
+    region = "NC HD-50"
     _MEM_CACHE.clear()
     first = run(region, refresh=True)
     assert first and all(isinstance(i, Issue) for i in first)
@@ -302,6 +302,6 @@ if __name__ == "__main__":
     third = run(region)
     assert _discover_calls == 1, "disk cache missed"
     assert [i.id for i in third] == [i.id for i in first]
-    fourth = run("  florida   hd-21  ")
+    fourth = run("  nc   hd-50  ")
     assert _discover_calls == 1, "equivalent region recomputed"
     print(f"OK: {len(first)} ranked issues; discover ran once across 4 calls")

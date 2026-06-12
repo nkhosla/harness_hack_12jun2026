@@ -32,7 +32,7 @@ def _statuses_by_agent(events: list) -> dict[str, list[str]]:
 async def test_run_emits_full_sequence(cache_env) -> None:
     events = []
     slate = await run(
-        "Florida HD-21: Marion + Alachua",
+        "NC HD-50: Caswell + Orange",
         "next 14 days",
         run_id="test-run",
         emit=events.append,
@@ -53,17 +53,17 @@ async def test_run_emits_full_sequence(cache_env) -> None:
 
 @pytest.mark.asyncio
 async def test_run_without_emit_returns_valid_slate(cache_env) -> None:
-    slate = await run("Florida HD-21", "next 14 days")
+    slate = await run("NC HD-50", "next 14 days")
     assert isinstance(slate, Slate)
     assert len(slate.ranked_events) == 5
-    assert slate.region == "Florida HD-21"
+    assert slate.region == "NC HD-50"
     assert slate.horizon == "next 14 days"
 
 
 @pytest.mark.asyncio
 async def test_run_agent_names_follow_convention(cache_env) -> None:
     events = []
-    await run("Florida HD-21", "next 14 days", emit=events.append)
+    await run("NC HD-50", "next 14 days", emit=events.append)
 
     scout_events = [event for event in events if event.agent == "scout"]
     architect_events = [
@@ -81,7 +81,7 @@ async def test_run_agent_names_follow_convention(cache_env) -> None:
 async def test_run_event_shape_matches_fixture(cache_env) -> None:
     run_id = "shape-check"
     live_events = []
-    await run("Florida HD-21", "next 14 days", run_id=run_id, emit=live_events.append)
+    await run("NC HD-50", "next 14 days", run_id=run_id, emit=live_events.append)
     fixture_events = mock_progress_events(run_id)
 
     assert len(live_events) == len(fixture_events)
@@ -95,7 +95,7 @@ async def test_run_event_shape_matches_fixture(cache_env) -> None:
 async def test_run_emits_failed_for_dropped_architects(cache_env) -> None:
     events = []
     slate = await run(
-        "Florida HD-21",
+        "NC HD-50",
         "next 14 days",
         build_events=_build_events_dropping_last,
         emit=events.append,
@@ -117,9 +117,9 @@ async def test_run_emits_failed_for_dropped_architects(cache_env) -> None:
 
 @pytest.mark.asyncio
 async def test_run_returns_schema_valid_slate_on_mocks(cache_env):
-    slate = await run("Florida HD-21", "next two weeks")
+    slate = await run("NC HD-50", "next two weeks")
 
-    assert slate.region == "Florida HD-21"
+    assert slate.region == "NC HD-50"
     assert slate.horizon == "next two weeks"
     assert len(slate.ranked_events) == 5
 
@@ -131,7 +131,7 @@ async def test_run_returns_schema_valid_slate_on_mocks(cache_env):
 async def test_run_emits_progress_feed(cache_env):
     events = []
 
-    await run("Florida HD-21", "next two weeks", emit=events.append)
+    await run("NC HD-50", "next two weeks", emit=events.append)
 
     assert events
     assert events[0].agent == "scout" and events[0].status == "started"
@@ -167,25 +167,25 @@ async def test_second_identical_run_replays_from_cache(cache_env, monkeypatch):
 
     monkeypatch.setattr(orchestrator, "_scout_step", counting_scout)
 
-    first = await run("Florida HD-21", "next two weeks")
+    first = await run("NC HD-50", "next two weeks")
     cache_file = (
         orchestrator._cache_dir()
-        / f"{orchestrator._run_key('Florida HD-21', 'next two weeks')}.json"
+        / f"{orchestrator._run_key('NC HD-50', 'next two weeks')}.json"
     )
     assert cache_file.is_file()
     assert call_count == 1
 
-    second = await run("Florida HD-21", "next two weeks")
+    second = await run("NC HD-50", "next two weeks")
     assert second == first
     assert call_count == 1
 
 
 @pytest.mark.asyncio
 async def test_replay_restamps_run_id(cache_env):
-    await run("Florida HD-21", "next two weeks", run_id="run-a")
+    await run("NC HD-50", "next two weeks", run_id="run-a")
 
     events = []
-    await run("Florida HD-21", "next two weeks", run_id="run-b", emit=events.append)
+    await run("NC HD-50", "next two weeks", run_id="run-b", emit=events.append)
 
     assert events
     assert all(event.run_id == "run-b" for event in events)
@@ -194,7 +194,7 @@ async def test_replay_restamps_run_id(cache_env):
 
 @pytest.mark.asyncio
 async def test_cache_mode_refresh_recomputes_and_overwrites(cache_env, monkeypatch):
-    first = await run("Florida HD-21", "next two weeks")
+    first = await run("NC HD-50", "next two weeks")
 
     call_count = 0
     original_scout = orchestrator._scout_step
@@ -207,14 +207,14 @@ async def test_cache_mode_refresh_recomputes_and_overwrites(cache_env, monkeypat
     monkeypatch.setattr(orchestrator, "_scout_step", counting_scout)
     monkeypatch.setenv("CAMPAIGN_CACHE_MODE", "refresh")
 
-    second = await run("Florida HD-21", "next two weeks")
+    second = await run("NC HD-50", "next two weeks")
     assert call_count == 1
     assert second == first
 
 
 @pytest.mark.asyncio
 async def test_cache_mode_off_bypasses_cache(cache_env, monkeypatch):
-    await run("Florida HD-21", "next two weeks")
+    await run("NC HD-50", "next two weeks")
 
     call_count = 0
     original_scout = orchestrator._scout_step
@@ -227,7 +227,7 @@ async def test_cache_mode_off_bypasses_cache(cache_env, monkeypatch):
     monkeypatch.setattr(orchestrator, "_scout_step", counting_scout)
     monkeypatch.setenv("CAMPAIGN_CACHE_MODE", "off")
 
-    await run("Florida HD-21", "next two weeks")
+    await run("NC HD-50", "next two weeks")
     assert call_count == 1
 
 
@@ -236,7 +236,7 @@ async def test_cache_mode_replay_raises_on_miss(cache_env, monkeypatch):
     monkeypatch.setenv("CAMPAIGN_CACHE_MODE", "replay")
 
     with pytest.raises(CacheMiss):
-        await run("Florida HD-21", "next two weeks")
+        await run("NC HD-50", "next two weeks")
 
 
 @pytest.mark.asyncio
@@ -246,19 +246,19 @@ async def test_replay_mode_does_not_create_cache_dir(monkeypatch, tmp_path):
     monkeypatch.setenv("CAMPAIGN_CACHE_MODE", "replay")
 
     with pytest.raises(CacheMiss):
-        await run("Florida HD-21", "next two weeks")
+        await run("NC HD-50", "next two weeks")
 
     assert not cache_root.exists()
 
 
 @pytest.mark.asyncio
 async def test_auto_mode_recomputes_on_corrupt_cache(cache_env):
-    key = orchestrator._run_key("Florida HD-21", "next two weeks")
+    key = orchestrator._run_key("NC HD-50", "next two weeks")
     cache_file = orchestrator._cache_file(key)
     cache_file.parent.mkdir(parents=True)
     cache_file.write_text("{ not valid json")
 
-    slate = await run("Florida HD-21", "next two weeks")
+    slate = await run("NC HD-50", "next two weeks")
 
     assert len(slate.ranked_events) == 5
     assert "slate" in json.loads(cache_file.read_text())
@@ -266,20 +266,20 @@ async def test_auto_mode_recomputes_on_corrupt_cache(cache_env):
 
 @pytest.mark.asyncio
 async def test_replay_mode_raises_on_corrupt_cache(cache_env, monkeypatch):
-    key = orchestrator._run_key("Florida HD-21", "next two weeks")
+    key = orchestrator._run_key("NC HD-50", "next two weeks")
     cache_file = orchestrator._cache_file(key)
     cache_file.parent.mkdir(parents=True)
     cache_file.write_text("{ not valid json")
     monkeypatch.setenv("CAMPAIGN_CACHE_MODE", "replay")
 
     with pytest.raises(CacheMiss):
-        await run("Florida HD-21", "next two weeks")
+        await run("NC HD-50", "next two weeks")
 
 
 @pytest.mark.asyncio
 async def test_custom_pipeline_does_not_replay_default_cache(cache_env):
-    await run("Florida HD-21", "next two weeks")
-    mock_key = orchestrator._run_key("Florida HD-21", "next two weeks")
+    await run("NC HD-50", "next two weeks")
+    mock_key = orchestrator._run_key("NC HD-50", "next two weeks")
     assert orchestrator._cache_file(mock_key).is_file()
 
     scout_calls = 0
@@ -304,7 +304,7 @@ async def test_custom_pipeline_does_not_replay_default_cache(cache_env):
         )
 
     live_key = orchestrator._run_key(
-        "Florida HD-21",
+        "NC HD-50",
         "next two weeks",
         scout=live_scout,
         build_events=live_build_events,
@@ -313,7 +313,7 @@ async def test_custom_pipeline_does_not_replay_default_cache(cache_env):
     assert live_key != mock_key
 
     await run(
-        "Florida HD-21",
+        "NC HD-50",
         "next two weeks",
         scout=live_scout,
         build_events=live_build_events,
@@ -327,8 +327,8 @@ async def test_custom_pipeline_does_not_replay_default_cache(cache_env):
 
 @pytest.mark.asyncio
 async def test_partial_custom_pipeline_does_not_replay_default_cache(cache_env):
-    await run("Florida HD-21", "next two weeks")
-    mock_key = orchestrator._run_key("Florida HD-21", "next two weeks")
+    await run("NC HD-50", "next two weeks")
+    mock_key = orchestrator._run_key("NC HD-50", "next two weeks")
 
     scout_calls = 0
 
@@ -340,13 +340,13 @@ async def test_partial_custom_pipeline_does_not_replay_default_cache(cache_env):
         return mock_issues()
 
     partial_key = orchestrator._run_key(
-        "Florida HD-21",
+        "NC HD-50",
         "next two weeks",
         scout=live_scout,
     )
     assert partial_key != mock_key
 
-    await run("Florida HD-21", "next two weeks", scout=live_scout)
+    await run("NC HD-50", "next two weeks", scout=live_scout)
 
     assert scout_calls == 1
 
@@ -358,7 +358,7 @@ async def test_architect_emits_failed_for_dropped_recommendations(cache_env):
 
     events = []
     slate = await run(
-        "Florida HD-21",
+        "NC HD-50",
         "next two weeks",
         build_events=partial_build_events,
         emit=events.append,
@@ -389,7 +389,7 @@ async def test_run_accepts_triple_emit_sink(cache_env):
     def emit(agent: str, status: str, detail: str) -> None:
         events.append((agent, status, detail))
 
-    await run("Florida HD-21", "next two weeks", emit=emit)
+    await run("NC HD-50", "next two weeks", emit=emit)
 
     assert events[0][0] == "scout"
     assert events[0][1] == "started"

@@ -18,23 +18,23 @@ import httpx  # noqa: E402
 
 from schemas.models import Article  # noqa: E402
 
-_DEFAULT_REGION = "Florida HD-21"
+_DEFAULT_REGION = "NC HD-50"
 _CACHE_DIR = _REPO_ROOT / "data/cache/news"
 _SEED_FIXTURE = "resources/news.sample.json"
 _FETCH_TIMEOUT = 15.0
 
 REGION_FEEDS: dict[str, list[str]] = {
-    "Florida HD-21": [
-        "https://www.gainesville.com/arc/outboundfeeds/rss/?outputType=xml",
-        "https://www.ocala.com/arc/outboundfeeds/rss/?outputType=xml",
-        "https://www.wuft.org/news-feed.rss",
+    "NC HD-50": [
+        "https://chapelboro.com/feed/",
+        "https://indyweek.com/feed/",
+        "https://www.newsobserver.com/latest-news/?widgetName=rssfeed&widgetContentId=712015&getXmlFeed=true",
     ],
 }
 
 FEED_SOURCE_BY_URL: dict[str, str] = {
-    "https://www.gainesville.com/arc/outboundfeeds/rss/?outputType=xml": "Gainesville Sun",
-    "https://www.ocala.com/arc/outboundfeeds/rss/?outputType=xml": "Ocala Star-Banner",
-    "https://www.wuft.org/news-feed.rss": "WUFT",
+    "https://chapelboro.com/feed/": "Chapelboro",
+    "https://indyweek.com/feed/": "INDY Week",
+    "https://www.newsobserver.com/latest-news/?widgetName=rssfeed&widgetContentId=712015&getXmlFeed=true": "News & Observer",
 }
 
 
